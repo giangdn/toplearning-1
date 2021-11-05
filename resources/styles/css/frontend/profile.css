@@ -1,0 +1,198 @@
+@CHARSET "UTF-8";
+
+.tab-content.mod-scb{
+	padding: 15px 10px;
+}
+
+.tab-content.mod-scb>.row{
+	padding: 8px;
+}
+
+.tab-content.mod-scb .mod-scb-profile{
+	border-bottom: 1px solid #ddd;
+	padding-left: 0;
+}
+
+.tab-content.mod-scb .mod-scb-profile .control-label{
+	padding-left: 0;
+}
+
+.tab-content.mod-scb .mod-scb-profile .control-content{
+	font-weight: bold;
+}
+
+.tPanel {
+	background: #f7f7f7;
+	border: 1px solid #cdcdcd;
+	box-shadow: 0 2px 2px -2px #ccc;
+	position: relative;
+	font-size: 13px;
+}
+
+.tPanel ul.nav-tabs { 
+	height: 37px; font-size: 12px; font-weight: bold; color: #636363; border-bottom: 1px solid #CDCDCD; box-shadow: 0 1px 0 #fff; -webkit-box-shadow: 0 1px 0 #fff; -moz-box-shadow: 0 1px 0 #fff; text-shadow: 0 1px white; -webkit-border-top-right-radius: 3px; -webkit-border-top-left-radius: 3px; -moz-border-radius-topright: 3px; -moz-border-radius-topleft: 3px;
+	background: #F8F8F8;
+	background: -moz-linear-gradient(top, #F8F8F8 0%, #E8E8E8 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F8F8F8), color-stop(100%,#E8E8E8));
+	background: -webkit-linear-gradient(top, #F8F8F8 0%,#E8E8E8 100%);
+	background: -o-linear-gradient(top, #F8F8F8 0%,#E8E8E8 100%);
+	background: -ms-linear-gradient(top, #F8F8F8 0%,#E8E8E8 100%);
+	background: linear-gradient(top, #F8F8F8 0%,#E8E8E8 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#e8e8e8',GradientType=0 );
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.tPanel ul.nav-tabs li { float: left; height: 37px; line-height: 37px; border-left: none; overflow: hidden; position: relative; border-right: 1px solid #cdcdcd; margin-left: 0px;}
+.tPanel ul.nav-tabs li a { display: block; border:none; line-height:inherit; margin-right:0; padding: 0px 16px; outline: none; color: #636363; font-size: 12px; font-weight: bold; }
+.tPanel ul.nav-tabs li a:hover { color: #797979; }
+.tPanel ul.nav-tabs li.active  { background-color: #f7f7f7; height: 37px; box-shadow: 0 -1px 0 #eaeaea inset; -webkit-box-shadow: 0 -1px 0 #eaeaea inset; -moz-box-shadow: 0 -1px 0 #eaeaea inset; }
+.tPanel ul.nav-tabs li.active a { color: #2E6B9B; background: none; border: none;} 
+.tPanel .tab-pane {padding: 10px 12px;}
+
+.tPanel table {
+	margin: 0;
+}
+
+.tLight,
+.tDefault {
+	margin-bottom: 0;
+}
+
+.tDefault tbody td, .tDefault thead th { border-left: 1px solid #DFDFDF; box-shadow: 0 1px 0 #fafafa inset; -webkit-box-shadow: 0 1px 0 #fafafa inset; -moz-box-shadow: 0 1px 0 #fafafa inset;}
+.tDefault tbody td:first-child, .tDefault thead th:first-child { border-left: none; }
+.checkAll thead th:first-child > img { vertical-align: middle; padding-bottom: 2px; }
+.tDefault thead th { text-align: center; font-size: 13px; padding: 3px 5px 2px 5px; color: #333; background: #eee; }
+.tDefault tbody td { padding: 7px 11px; vertical-align: middle!important; }
+.tDefault tbody td input{margin: 0px;}
+.tDefault tbody tr { border-top: 1px solid #DFDFDF; }
+.tDefault tbody tr:first-child { box-shadow: 0 1px 0px #fff inset; -webkit-box-shadow: 0 1px 0px #fff inset; -moz-box-shadow: 0 1px 0px #fff inset; }
+.tDefault tbody tr:nth-child(even) { background: #f2f2f2; }
+
+.tbl-heading th {
+	background: #f7f7f7!important;
+	background: -moz-linear-gradient(top, #fff 0%, #f5f5f5 100%)!important;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f5f5f5))!important;
+	background: -webkit-linear-gradient(top, #fff 0%,#f5f5f5 100%)!important;
+	background: -o-linear-gradient(top, #fff 0%,#f5f5f5 100%)!important;
+	background: -ms-linear-gradient(top, #fff 0%,#f5f5f5 100%)!important;
+	background: linear-gradient(top, #fff 0%,#f5f5f5 100%)!important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#f5f5f5',GradientType=0 )!important;
+	
+	border-bottom: solid 2px #999!important;
+}
+.tbl-heading input[type=checkbox]{
+	margin: 0 0 0 3px!important;
+}
+
+#workprocess .work{
+	background: white;
+	margin: 10px 0;
+	border-radius: 3px;
+	border: 1px solid #cdcdcd;
+	box-shadow: 0 2px 2px -2px #ccc;
+	margin: 5px;
+}
+
+.row{
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+#workprocess  .work .row{
+	margin: 0px;
+}
+
+#workprocess  .work h5{
+	font-size: 12px;
+	color: #636363;
+	margin: 0px;
+	padding: 0;
+}
+
+#workprocess  .work .header{
+	background: #f7f7f7;
+	height: 42px;
+	line-height: 42px;
+}
+
+#workprocess .userprofile{
+	margin-top: 5px;
+}
+
+
+.userprofile .work .userprofile{
+	padding: 15px 0;
+}
+
+.thongtin:focus,.thongtin:active .thongtin:hover{
+
+}
+
+.thongtin>li>a {
+    padding: 15px 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 0px!important;
+    border-bottom: 1px solid transparent;
+    font-size: 15.7px;
+    color: #0c8281 !important;
+
+}
+.nav-tabs .nav-link{
+	border:none !important;
+	font-size: 13px;
+}
+
+.nav-tabs>li.active>a,.nav-tabs>li:hover>a{
+	color: #c02126 !important;
+    border-bottom: 2px solid #c02126 !important;
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    cursor: pointer;
+
+}
+
+.nav-tabs>li.active>a:hover,.nav-tabs>li.active>a:focus{
+    cursor: default;
+
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+	color: #c02126;
+    border-bottom: 2px solid #c02126 !important;
+    border-top: transparent;
+    border-left: transparent;
+    border-right: transparent;
+    cursor: default;
+
+}
+
+.nav-tabs .nav-link{
+	color:#0c8281 ;
+}
+
+/*.thooo .nav-tabs>li.active>a:after,
+.thooo .nav-tabs>li:hover>a:after{
+	width: 0;
+	height: 0;
+	content: " ";
+	border-style: solid;
+	border-width: 0 6px 6px 6px;
+	border-color: transparent transparent #c02126 transparent;
+	position: absolute;
+	bottom:0;
+	left: 46%;
+}
+
+*/
+
+
+@media (max-width: 411px)
+{
+	#trainingroadmap .courses_news ul.thongtin li a{
+		font-size: 12px;
+    	text-transform: capitalize;
+	}
+}

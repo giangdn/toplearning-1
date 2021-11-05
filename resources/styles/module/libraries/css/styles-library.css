@@ -1,0 +1,69 @@
+.post-other{
+
+}
+
+.post-other h3{
+	text-align: center;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+.post-other .block-item{
+	border: 1px solid #ddd;
+    margin-bottom: 20px;
+    background: rgba(253, 253, 253, 0.5882352941176471);
+}
+
+/*.post-other .block-item .image{*/
+/*	width: 30%;*/
+/*    display: inline-block;*/
+/*}*/
+
+/*.post-other .block-item .content{*/
+/*	width: 65%;*/
+/*    display: inline-block;*/
+/*}*/
+
+.post-other .block-item .content .name{}
+
+.post-other .block-item .content .name a{}
+
+.post-other .block-item .content .description{
+	font-size: 13px;
+}
+
+.bookmark {
+    text-transform: uppercase;
+    position: absolute;
+    top: 15px;
+    right: -20px;
+    z-index: 100;
+    background: blue;
+    transform: rotate(45deg);
+    padding: 4px 25px;
+    -webkit-transform-origin-y: bottom;
+    transition: all 0.35s ease;
+}
+
+.borrowed{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: green;
+    padding: 5px;
+}
+
+h6{
+    position: relative;
+    text-align: center;
+    color: white;
+    margin: 30px auto;
+}
+
+h6 .title{
+    position: absolute;
+    top: 50%;
+    left: 52%;
+    transform: translate(-50%, -50%);
+}

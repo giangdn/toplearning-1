@@ -1,0 +1,25 @@
+.group-item .group{
+    display: inline-block;
+    width: 95%;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+#capabilities-review .table-review th,
+#capabilities-review .table-review td{
+    text-align: center;
+    vertical-align: middle;
+}
+
+#course-review .table-review th,
+#course-review .table-review td{
+    text-align: center;
+    vertical-align: middle;
+}
+
+.bg-sum {
+    background-color: #fff !important;
+}
+.bg-sum2 {
+    background: #0034f170 !important;
+}

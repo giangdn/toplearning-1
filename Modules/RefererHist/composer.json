@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/refererhist",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\RefererHist\\Providers\\RefererHistServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\RefererHist\\": ""
+        }
+    }
+}

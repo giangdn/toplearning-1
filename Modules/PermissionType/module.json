@@ -1,0 +1,14 @@
+{
+    "name": "PermissionType",
+    "alias": "permissiontype",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\PermissionType\\Providers\\PermissionTypeServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

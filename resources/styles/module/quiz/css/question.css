@@ -1,0 +1,25 @@
+.list-quiz-question {
+    list-style: none;
+}
+.list-quiz-question .item-quiz-question {
+    background: #e6e6e6;
+    margin: 3px 0;
+    padding: .2em;
+}
+.list-quiz-question .item-quiz-question .custom-score {
+    width: 50px;
+}
+
+.list-quiz-question .item-quiz-question .custom-num-order {
+    text-align: center;
+    width: 40px;
+}
+
+.list-quiz-question .item-quiz-question .custom-question{
+    font-weight: bold;
+    cursor: all-scroll;
+}
+
+.list-quiz-question .category-question {
+    background: #dadada;
+}

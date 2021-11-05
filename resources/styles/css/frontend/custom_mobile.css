@@ -1,0 +1,322 @@
+/* For desktop: */
+.col-1 {
+    width: 8.33%;
+}
+
+.col-2 {
+    width: 16.66%;
+}
+
+.col-3 {
+    width: 25%;
+}
+
+.col-4 {
+    width: 33.33%;
+}
+
+.col-5 {
+    width: 41.66%;
+}
+
+.col-6 {
+    width: 50%;
+}
+
+.col-7 {
+    width: 58.33%;
+}
+
+.col-8 {
+    width: 66.66%;
+}
+
+.col-9 {
+    width: 75%;
+}
+
+.col-10 {
+    width: 83.33%;
+}
+
+.col-11 {
+    width: 91.66%;
+}
+
+.col-12 {
+    width: 100%;
+}
+
+/*
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1281px) {
+    main .content-main .row1,
+    .row2 {
+        width: 1350px !important;
+    }
+
+    /*main .content-main .row1 .block .user, .row2 .block .user{*/
+    /*    margin: auto 35% !important;*/
+    /*}*/
+}
+
+/*
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+    main .content-main .row1,
+    .row2 {
+        /*width: 1025px !important;*/
+    }
+}
+
+/*
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    main .content-main .row1,
+    .row2 {
+        width: 1025px !important;
+    }
+
+    #quiz-list .flex-grid-coures h1 {
+        font-size: 2rem;
+    }
+
+    #quiz-list .flex-grid-coures .clock ul li {
+        font-size: 4em;
+    }
+}
+
+/*
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    main .content-main .row1,
+    .row2 {
+        width: 1025px !important;
+    }
+}
+
+/*
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+    [class*="col-"] {
+        width: 100%;
+    }
+}
+
+/*
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+    main .container-fluid .tab-content {
+        padding-left: 25px;
+    }
+    main .content-main .row1 .block .title {
+        margin-top: 15px !important;
+    }
+    .breadcrumb {
+        padding: 5px 0 !important;
+    }
+    .breadcrumb li {
+        padding: 3px !important;
+    }
+    main .content-main .row0 .cadre {
+        width: 46% !important;
+    }
+    main .content-main .row-text .cadres {
+        width: 46% !important;
+    }
+    main .content-main .row1 .col-md-3,
+    .row2 .col-md-3 {
+        padding-left: 50px;
+        padding-right: 20px;
+    }
+
+    main .content-main .row1 .block .user,
+    .row2 .block .user {
+        margin: auto 29% !important;
+    }
+
+    .navbar-toggleable-md .navbar-nav .dropdown-menu {
+        background-color: transparent;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+        border: none;
+    }
+
+    .navbar-toggleable-md .navbar-nav .dropdown-menu a {
+        color: black;
+        font-weight: 600;
+    }
+
+    nav.nav-mobile,
+    .form-search-mobile,
+    .bottom-mobile {
+        display: block;
+    }
+
+    header .main-menu .navbar-collapse .navbar-nav .nav-item .submenu-content li a {
+        font-size: 12px;
+    }
+
+    nav.nav-desktop {
+        display: none;
+    }
+
+    header {
+        position: inherit;
+    }
+
+    header .head-header ul.menu-top {
+        position: inherit;
+    }
+
+    header .head-header .lang {
+        display: none;
+    }
+
+    header .head-header ul.menu-top li a {
+        font-size: 10px;
+    }
+
+    main .content-main .row0 {
+        margin-top: 0px;
+        height: auto;
+    }
+    main .content-main .row-text {
+        margin-top: -300px;
+        height: auto;
+    }
+
+    main .content-main .row0 .cadre {
+        display: inline-block;
+        width: 47%;
+        background-image: none;
+        margin: 5px;
+        border: 5px solid #adada4;
+        padding: 5px;
+    }
+    main .content-main .row-text .cadres {
+        display: inline-block;
+        width: 47%;
+        margin: 5px;
+        padding: 5px;
+    }
+
+    main .content-main .row0 .cadre:hover {
+        background-image: none;
+    }
+    main .content-main .row-text .cadres:hover {
+        background-image: none;
+    }
+
+    main .content-main .row0 .cadre .text {
+        margin: 0 auto;
+        background: #adada4;
+        height: 100%;
+    }
+    main .content-main .row-text .cadres .text {
+        margin: 0 auto;
+        height: 100%;
+    }
+
+    main .content-main .row0 .cadre .text div.info {
+        padding: 30px;
+    }
+    main .content-main .row-text .cadres .text div.info {
+        padding: 35px 0px;
+    }
+
+    main .content-main .row0 .cadre .text div.info font {
+        font-size: 13px;
+    }
+    main .content-main .row-text .cadres .text div.info font {
+        font-size: 10px;
+    }
+
+    main .content-main .row0 .cadre .text div.view {
+        display: none;
+    }
+
+    footer .row-bottom {
+        padding: 5px 0;
+    }
+
+    footer .bottom-left {
+        width: 25%;
+    }
+
+    footer .bottom-right {
+        width: 70%;
+    }
+
+    footer .bottom-left ul {
+        display: none;
+    }
+
+    footer .bottom-right .text {
+        font-size: 8px;
+    }
+
+    footer .bottom-right .introduce {
+        display: none;
+    }
+
+    footer .bottom-mobile {
+        background: #fff;
+    }
+
+    footer .bottom-mobile ul {
+        margin: 0px;
+        list-style: none;
+    }
+
+    footer .bottom-mobile ul li a {
+        color: #716f6f;
+        font-size: 12px;
+    }
+
+    footer .bottom-mobile ul li a:hover {
+        color: red;
+    }
+
+    .button-slide a img {
+        width: 10%;
+    }
+
+    main .content-main .row2 .block .title a {
+        font-size: 14px;
+    }
+
+    main .content-main .row2 .block .time,
+    main .content-main .row2 .block .title .deadline,
+    main .content-main .row1 .block .title .time,
+    main .content-main .row1 .block .title .deadline {
+        font-size: 12px;
+    }
+
+    footer .copy {
+        font-size: 8px;
+    }
+
+    h6 .title {
+        left: 58.5% !important;
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "name": "SubjectRegister",
+    "alias": "subjectregister",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\SubjectRegister\\Providers\\SubjectRegisterServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

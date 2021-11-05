@@ -1,0 +1,36 @@
+<?php 
+
+        return[ 
+'languages' => 'Ngôn ngữ', 
+'addnew' => 'Thêm mới', 
+'synchronized' => 'Đồng bộ', 
+'vietnamese_content' => 'Nội dung Tiếng Việt', 
+'type_keyword' => 'Nhập từ khóa', 
+'search' => 'Tìm kiếm', 
+'keyword' => 'Từ khóa', 
+'delete' => 'Xóa', 
+'export' => 'Xuất file', 
+'english_content' => 'Nội dung tiếng Anh', 
+'info' => 'Thông tin', 
+'save' => 'Lưu', 
+'cancel' => 'Hủy', 
+'summary' => 'Thống kê', 
+'situations_proccessing' => 'Xử lý tình huống', 
+'user_take_leave' => 'Nhân viên nghỉ phép', 
+'note' => 'Ghi chú', 
+'detail' => 'Chi tiết', 
+'summary_dashboard' => 'Tổng quan', 
+'disable' => 'Khóa', 
+'enable' => 'Mở', 
+'copy' => 'Sao chép', 
+'creator' => 'Người tạo', 
+'editor' => 'Người sửa', 
+'system_error' => 'Lỗi hệ thống', 
+'min_one_course' => 'Vui lòng chọn ít nhất 1 khóa học', 
+'open' => 'Mở', 
+'export_excel' => 'Xuất excel', 
+'import' => 'Import', 
+'import_template' => 'Mẫu import', 
+];
+
+        ?>

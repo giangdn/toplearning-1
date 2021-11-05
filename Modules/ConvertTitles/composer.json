@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/converttitles",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\ConvertTitles\\Providers\\ConvertTitlesServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ConvertTitles\\": ""
+        }
+    }
+}

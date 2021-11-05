@@ -1,0 +1,14 @@
+{
+    "name": "CourseOld",
+    "alias": "courseold",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\CourseOld\\Providers\\CourseOldServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

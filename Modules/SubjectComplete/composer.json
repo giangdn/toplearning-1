@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/subjectcomplete",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\SubjectComplete\\Providers\\SubjectCompleteServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\SubjectComplete\\": ""
+        }
+    }
+}

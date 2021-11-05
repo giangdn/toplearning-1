@@ -1,0 +1,2 @@
+$(function(){$('li.gdropdown').click(function(){if(!$(this).hasClass('open')){$('li.gdropdown').each(function(idx,el){if($(el).hasClass('open'))$(el).removeClass('open')});$(this).addClass('open')}});$(document).mouseup(function(e){var container=$('li.gdropdown');if(!container.is(e.target)&&container.has(e.target).length===0&&container.hasClass('open'))
+{container.removeClass('open')}})})

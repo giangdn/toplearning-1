@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/virtualclassroom",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\VirtualClassroom\\Providers\\VirtualClassroomServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\VirtualClassroom\\": ""
+        }
+    }
+}

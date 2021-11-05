@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/dailytraining",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\DailyTraining\\Providers\\DailyTrainingServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\DailyTraining\\": ""
+        }
+    }
+}

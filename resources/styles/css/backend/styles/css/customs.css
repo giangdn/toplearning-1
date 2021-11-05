@@ -1,0 +1,262 @@
+body{
+    font-family: inherit;
+}
+
+.btn {
+    font-size: 0.9rem !important;
+}
+
+.box-hidden {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+#adminstrator-nav-bar{
+    position: fixed !important;
+    z-index: 100;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.75);
+    border-bottom: none;
+    background: white;
+    /*font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;*/
+}
+
+#adminstrator-nav-bar .nav-custom{
+    height: 50px;
+}
+
+#adminstrator-nav-bar .nav-custom .ul-custom{
+    margin-left: 0 !important;
+    font-size: 0.9rem !important;
+}
+
+#adminstrator-nav-bar .nav-custom .ul-custom .nav-item .nav-link{
+    color: black;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#adminstrator-nav-bar .nav-custom .ul-custom .nav-item .nav-link:hover{
+    color: #0655a3;
+    font-weight: bold;
+}
+
+#adminstrator-nav-bar .nav-custom .ul-custom .nav-item .dropdown-item{
+    color: black;
+    font-size: 0.9rem !important;
+}
+
+#adminstrator-nav-bar .nav-custom .ul-custom .nav-item .dropdown-item:hover{
+    background: #242f52;
+    color: #fff;
+}
+
+#adminstrator-nav-bar .nav-custom .ul-custom .nav-item .dropdown-item.active,
+#adminstrator-nav-bar .nav-custom .ul-custom .nav-item .dropdown-item:active {
+    background: #dfdede;
+}
+
+#adminstrator-nav-bar .nav-custom .img-custom img{
+    width: 100px;
+
+}
+
+#adminstrator-nav-bar .nav-custom .ul-custom li>.dropdown-custom::before{
+    content: '';
+    display: inline-block;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #ccc;
+    border-bottom-color: rgba(0,0,0,.2);
+    position: absolute;
+    top: -7px;
+    left: 9px;
+}
+
+#adminstrator-nav-bar .nav-custom .ul-custom li>.dropdown-custom::after{
+    content: '';
+    display: inline-block;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid #fff;
+    position: absolute;
+    top: -6px;
+    left: 10px;
+}
+
+#adminstrator-nav-bar .menu-custom .logout-custom{
+    font-size: 13px;
+}
+
+#adminstrator-nav-bar .menu-custom .logout-custom a{
+    color: #000;
+    font-weight: 700;
+}
+
+#adminstrator-page{
+    padding-top: 100px;
+}
+
+#adminstrator-page .row-acts-btn{
+    text-align: center;
+    margin-bottom: 15px;
+    padding: 0 15px 15px 15px;
+}
+
+#adminstrator-page .row-acts-btn .btn{
+    font-size: 0.9rem !important;
+}
+
+#adminstrator-page #image-review img{
+    width: 100%;
+    max-height: 100%;
+}
+
+#adminstrator-page .form-custom:focus{
+    box-shadow: none !important;
+}
+
+#adminstrator-page .date-custom{
+   width: 47.8%;
+}
+
+.ck-editor__editable_inline {
+    min-height: 200px;
+}
+
+#page-header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0066b3;
+    text-transform: uppercase;
+}
+
+#footer {
+    color: #333;
+    padding: 0;
+}
+#footer hr {
+    border-top: solid 5px #0066b3!important;
+    margin-bottom: 0;
+}
+#footer .footer-1 {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+#footer p {
+    margin: 5px 0;
+}
+
+ul.footer-ul-custom li {
+    list-style: none;
+    display: inline-block;
+    padding: 0 6px;
+    border-right: solid 1px #444;
+    text-transform: uppercase;
+}
+
+ul.footer-ul-custom li:last-child {
+    border-right: none;
+}
+
+div#footer ul.footer-ul-custom li a {
+    display: block;
+    color: #333;
+}
+
+.select2-container .select2-selection--single{
+    height: unset;
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__clear {
+    color: red;
+    margin-left: 5px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+    line-height: unset;
+}
+
+form .form-control.error,
+.select2-container span.error{
+    border: 1px solid red;
+}
+
+.btn-success,
+.btn-primary,
+.btn-info{
+    color: white !important;
+}
+
+.custom-file label:after{
+    content:  attr(data-text);
+}
+
+label.error{
+    color:red;
+}
+
+.bootstrap-table th[data-formatter],
+.bootstrap-table th[data-align],
+.bootstrap-table th[data-field],
+.bootstrap-table th[data-width],
+.load-user,
+.load-title,
+.load-training-form,
+.load-training-program,
+.load-unit,
+.load-subject,
+.load-quiz-type,
+select[data-placeholder]
+{
+
+}
+
+@media (min-width: 768px) {
+    .modal-xl {
+        width: 90%;
+        max-width: 1200px;
+    }
+}
+
+@media (max-width: 768px) {
+    #adminstrator-nav-bar .navbar-collapse {
+        background: #f1f1f1;
+        padding: 15px;
+        font-size: 13px;
+    }
+
+    #adminstrator-nav-bar .dropdown-menu{
+        font-size: 13px;
+        background-color: unset;
+    }
+}

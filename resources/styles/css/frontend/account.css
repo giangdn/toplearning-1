@@ -1,0 +1,145 @@
+header{
+    position: initial;
+    border-bottom: 1px solid #ddd;
+}
+
+.nav-desktop .navbar-brand img{
+    width: 150px;
+}
+
+.breadcrumb li{
+    float: left;
+    padding: 10px;
+}
+
+.breadcrumb li a{
+    color: #003768;
+    text-decoration: none;
+    font-weight: 700;
+}
+.nav-pills .nav-link.active
+{
+    background-color: transparent;
+    color: #003768;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+.nav-pills .nav-link
+{
+    background-color: transparent;
+    color: #000;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+.nav-pills .nav-link:hover
+{
+    background-color: transparent;
+    color: #003768;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+#trainingroadmap .tDefault {
+    font-size: 14px;
+}
+
+#trainingroadmap .tDefault th{
+    text-align: center;
+}
+
+#trainingroadmap .courses_news ul.thongtin{
+    height: 37px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #636363;
+    border-bottom: 1px solid #CDCDCD;
+    box-shadow: 0 1px 0 #fff;
+    -webkit-box-shadow: 0 1px 0 #fff;
+    -moz-box-shadow: 0 1px 0 #fff;
+    text-shadow: 0 1px white;
+    -webkit-border-top-right-radius: 3px;
+    -webkit-border-top-left-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    -moz-border-radius-topleft: 3px;
+    background: #F8F8F8;
+    background: -moz-linear-gradient(top, #F8F8F8 0%, #E8E8E8 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F8F8F8), color-stop(100%,#E8E8E8));
+    background: -webkit-linear-gradient(top, #F8F8F8 0%,#E8E8E8 100%);
+    background: -o-linear-gradient(top, #F8F8F8 0%,#E8E8E8 100%);
+    background: -ms-linear-gradient(top, #F8F8F8 0%,#E8E8E8 100%);
+    background: linear-gradient(top, #F8F8F8 0%,#E8E8E8 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8f8f8', endColorstr='#e8e8e8',GradientType=0 );
+}
+
+#trainingroadmap .courses_news ul.thongtin li{
+    padding: 0; 
+    float: left;
+    height: 37px;
+    border-left: none;
+    overflow: hidden;
+    position: relative;
+    border-right: 1px solid #cdcdcd;   
+}
+
+#trainingroadmap .courses_news ul.thongtin li a{
+    padding: 10px 20px;
+}
+
+#trainingroadmap .courses_news ul.thongtin li a.active{
+    color: unset;
+    border-bottom: unset !important;
+    background: unset;
+}
+
+#trainingroadmap .courses_news ul.thongtin li a:hover{
+    color: unset;
+    border-bottom: unset !important;
+}
+
+#trainingroadmap .courses_news ul.thongtin li.active a{
+    color: unset !important;
+    border-bottom: unset !important;
+}
+
+@media (min-width: 992px)
+{
+    #trainingroadmap .courses_news ul .col-md-2{
+        max-width: 20% !important;
+        -webkit-box-flex: 0;
+        -webkit-flex: 0 0 20%;
+        -ms-flex: 0 0 20%;
+        flex: 0 0 20%;
+    }
+
+}
+
+@media (max-width: 411px)
+{
+    #trainingroadmap .courses_news ul.thongtin{
+        height: unset;
+        text-align: unset !important;
+    }
+
+    .tab-content.mod-scb .mod-scb-profile .control-label{
+        width: 50%;
+    }
+
+    .tab-content.mod-scb .mod-scb-profile .control-content{
+        width: 48%;
+    }
+
+    #trainingroadmap .courses_news ul.thongtin li{
+        width: 100%;
+    }
+}
+
+@media (max-width: 991px)
+{
+    #trainingroadmap .courses_news ul.thongtin{
+        height: unset;
+    }
+}

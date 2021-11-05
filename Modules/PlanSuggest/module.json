@@ -1,0 +1,14 @@
+{
+    "name": "PlanSuggest",
+    "alias": "plansuggest",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\PlanSuggest\\Providers\\PlanSuggestServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

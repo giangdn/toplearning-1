@@ -1,0 +1,14 @@
+{
+    "name": "Suggest",
+    "alias": "suggest",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Suggest\\Providers\\SuggestServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

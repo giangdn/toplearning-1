@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/modelhistory",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\ModelHistory\\Providers\\ModelHistoryServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ModelHistory\\": ""
+        }
+    }
+}

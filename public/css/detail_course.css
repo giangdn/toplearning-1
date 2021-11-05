@@ -1,0 +1,100 @@
+.wrapper {
+    min-height: unset !important;
+}
+.course_tab_content {
+    background: white;
+    height: 100%;
+}
+.iframe_activity,
+.iframe-embed {
+    min-height: 570px;
+}
+.body_content {
+    position: relative;
+}
+.activity_scorm {
+    clear: both;
+}
+.icon_class {
+    width: 40px;
+    height: 40px;
+    padding: 7px;
+    margin-top: -5px;
+    background: aliceblue;
+    border-radius: 35%;
+    margin-right: 5px;
+}
+.information_name,
+.information_score,
+.information_access,
+.information_result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menu_course {
+    background: #1b4486 !important;
+    height: 45px;
+}
+.nav-link {
+    color: white !important;
+}
+.check_complete {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+}
+#navbarNavAltMarkup .nav-item {
+    width: auto;
+    padding: 5px 10px;
+    text-align: center;
+    margin-right: 10px;
+}
+.accordion-header {
+    padding: 10px;
+}
+#carouselCourse {
+    position: relative;
+}
+#carouselCourse .button_start {
+    opacity: 0.7;
+}
+#carouselCourse .carousel-inner {
+    height: 525px;
+}
+#carouselCourse .button_start {
+    position: absolute;
+    top: 50%;
+    left: 40%;
+    min-width: 160px;
+    height: 45px;
+    padding: 5px 15px;
+    border-radius: 30px;
+}
+#carouselCourse .button_start:hover {
+    opacity: unset;
+}
+.set_style {
+    width: 500px;
+}
+.set_display {
+    display: none;
+}
+
+@media (max-width: 576px) {
+    #carouselCourse .button_start {
+        left: 12% !important;
+    }
+    .nav-link {
+        padding: 10px 6px !important;
+    }
+}
+@media (min-width: 1700px) {
+    #footer_body {
+        position: absolute;
+        bottom: 0px;
+    }
+}
+.nav-tabs {
+    border-bottom: none;
+}

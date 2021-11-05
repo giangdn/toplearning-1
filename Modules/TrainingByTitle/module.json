@@ -1,0 +1,14 @@
+{
+    "name": "TrainingByTitle",
+    "alias": "trainingbytitle",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\TrainingByTitle\\Providers\\TrainingByTitleServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

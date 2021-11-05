@@ -1,0 +1,14 @@
+{
+    "name": "MoveTrainingProcess",
+    "alias": "movetrainingprocess",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\MoveTrainingProcess\\Providers\\MoveTrainingProcessServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

@@ -1,0 +1,14 @@
+{
+    "name": "AppNotification",
+    "alias": "appnotification",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\AppNotification\\Providers\\AppNotificationServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

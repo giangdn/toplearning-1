@@ -1,0 +1,57 @@
+#modal-media .scrollpane{
+    overflow-y: scroll;
+    height: 300px;
+    overflow-x: hidden;
+}
+
+#modal-media #results .media-item{
+    cursor: pointer;
+    background: #ffffff;
+    text-align: center;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    z-index: 100;
+    width: 150px;
+    height: 160px;
+    position: relative;
+    padding: 5px;
+}
+
+#modal-media #results .media-item .item-detail{
+    background: #fcfcfc;
+}
+
+#modal-media #results .media-item .item-detail .thumb-icon {
+    height: 126px;
+    width: 100%;
+    -ms-flex-pack: center;
+    -ms-flex-align: center;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    display: box;
+    box-pack: center;
+    box-align: center;
+}
+
+#modal-media #results .media-item .item-detail span.file-name {
+    display: block;
+    margin-top: 5px;
+    text-align: center;
+    width: 100%;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+#modal-media #results .media-item .item-detail span.file-name,
+#modal-media #results .media-item .item-detail span.file-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#modal-media .medie-form-search input,
+#modal-media .medie-form-search select{
+    margin-right: 5px;
+}

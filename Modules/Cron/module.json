@@ -1,0 +1,14 @@
+{
+    "name": "Cron",
+    "alias": "cron",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Cron\\Providers\\CronServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

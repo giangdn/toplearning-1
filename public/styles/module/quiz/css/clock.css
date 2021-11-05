@@ -1,0 +1,105 @@
+@CHARSET "UTF-8";
+
+.clock {
+    /* width: 800px; */
+    margin: 0 auto;
+    color: #fff;
+}
+
+#Date {
+    /*font-family: Helvetica, Arial, sans-serif;*/
+    font-size: 28px;
+    text-align: center;
+    text-shadow: 0 0 5px #00c6ff;
+    font-weight: bold;
+}
+
+.clock ul {
+    margin: 0 auto;
+    padding: 0px;
+    list-style: none;
+    text-align: center;
+
+}
+
+.clock ul li {
+    display: inline;
+    font-size: 7em;
+    text-align: center;
+    /*font-family: 'BebasNeueRegular', Arial, Helvetica, sans-serif;*/
+    text-shadow: 0 0 5px #00c6ff;
+}
+
+.clock #point {
+    position: relative;
+    -moz-animation: mymove 1s ease infinite;
+    -webkit-animation: mymove 1s ease infinite;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Simple Animation */
+@-webkit-keyframes mymove {
+    0% {
+    	opacity: 1.0;
+    	text-shadow: 0 0 20px #00c6ff;
+	}
+
+	50% {
+	    opacity: 0;
+	    text-shadow: none;
+	}
+
+	100% {
+	    opacity: 1.0;
+	    text-shadow: 0 0 20px #00c6ff;
+	}
+}
+
+@-moz-keyframes mymove {
+    0% {
+        opacity: 1.0;
+        text-shadow: 0 0 20px #00c6ff;
+    }
+
+    50% {
+        opacity: 0;
+        text-shadow: none;
+    }
+
+    100% {
+        opacity: 1.0;
+        text-shadow: 0 0 20px #00c6ff;
+    }
+}
+
+@media (max-width: 411px)
+{
+    .clock ul li{
+        font-size: 5em;
+    }
+
+    .header{
+        margin-right: -15px !important;
+    }
+
+    .header .input-group{
+        display: unset;
+    }
+
+    .input-group .form-control{
+        width: 100% !important;
+    }
+
+    .flex-grid-coures h1{
+        font-size: 25px;
+    }
+
+    #Date{
+        font-size: 20px;
+    }
+
+    .clock ul{
+        font-size: 10px;
+    }
+}

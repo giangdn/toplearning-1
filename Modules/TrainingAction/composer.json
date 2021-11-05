@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/trainingaction",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\TrainingAction\\Providers\\TrainingActionServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\TrainingAction\\": ""
+        }
+    }
+}

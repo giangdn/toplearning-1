@@ -1,0 +1,193 @@
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    .main_logo {
+        margin-left: 5px !important;
+        width: 150px !important;
+        left: 15%;
+    }
+
+    .search120 {
+        display: none;
+        margin-left: 0 !important;
+    }
+
+    .upload_btn {
+        display: none;
+    }
+
+    .header_right ul li:nth-child(2) {
+        display: none !important;
+    }
+
+    .option_links {
+        padding: 10px 3px !important;
+        font-size: 18px !important;
+    }
+
+    .opts_account img {
+        margin-left: 5px !important;
+        width: 50px !important;
+    }
+
+    .menu.dropdown_mn {
+        margin-right: -43px !important;
+    }
+
+    .noti_count {
+        right: 0 !important;
+    }
+
+    .tc_footer_left {
+        width: 100%;
+        text-align: center;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-y: hidden;
+    }
+
+    .message-inner-dt > p {
+        width: 100% !important;
+    }
+
+    .reviews_left {
+        margin-bottom: 50px;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .main_logo {
+        margin-left: 10px !important;
+    }
+
+    .search120 {
+        display: none;
+        margin-left: 0 !important;
+    }
+
+    .reviews_left {
+        margin-bottom: 50px;
+    }
+
+    .hf_img {
+        width: 100% !important;
+        float: left;
+        position: relative;
+    }
+
+    .hs_content {
+        padding: 10px 5px !important;
+        float: left;
+        width: 100% !important;
+        position: relative;
+    }
+
+    .eps_dots10 {
+        top: 10px !important;
+    }
+
+    .ml_item {
+        width: auto !important;
+        text-align: center !important;
+        padding-top: 0;
+        margin-left: 15px !important;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-y: hidden;
+    }
+
+    .message-inner-dt > p {
+        width: 100% !important;
+    }
+
+    .reviews_left {
+        margin-bottom: 50px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .main_logo {
+        margin-left: 10px !important;
+    }
+
+    .search120 {
+        display: none;
+        margin-left: 0 !important;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow-y: hidden;
+    }
+
+    .message-inner-dt > p {
+        width: 100% !important;
+    }
+
+    .reviews_left {
+        margin-bottom: 50px;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    body {
+        overflow-y: scroll;
+    }
+
+    .logo img {
+        width: 200px;
+        text-align: center;
+        margin-top: 10px;
+        float: none;
+    }
+
+    .wrapper__minify {
+        margin-left: 50px;
+    }
+
+    .message-inner-dt > p {
+        width: 100% !important;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px !important;
+    }
+
+    .hf_img {
+        width: 40% !important;
+    }
+
+    .hs_content {
+        width: 60% !important;
+    }
+
+    .container-fluid {
+        padding-right: 25px !important;
+        padding-left: 25px !important;
+    }
+}
+@media (max-width: 375px) {
+    .header_right ul li:nth-child(1) {
+        display: none !important;
+    }
+}
+
+body::-webkit-scrollbar {
+    width: 14px;
+    border-radius: 10px;
+    color: #8b1409;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #8b1409;
+    border-radius: 10px;
+}

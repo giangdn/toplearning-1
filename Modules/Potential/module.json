@@ -1,0 +1,14 @@
+{
+    "name": "Potential",
+    "alias": "potential",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Potential\\Providers\\PotentialServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

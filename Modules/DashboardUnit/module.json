@@ -1,0 +1,14 @@
+{
+    "name": "DashboardUnit",
+    "alias": "dashboardunit",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\DashboardUnit\\Providers\\DashboardUnitServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

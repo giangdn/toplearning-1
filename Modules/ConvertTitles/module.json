@@ -1,0 +1,14 @@
+{
+    "name": "ConvertTitles",
+    "alias": "converttitles",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\ConvertTitles\\Providers\\ConvertTitlesServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

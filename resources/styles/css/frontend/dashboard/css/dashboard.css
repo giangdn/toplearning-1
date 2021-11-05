@@ -1,0 +1,110 @@
+header{
+    border-bottom: 1px solid #ddd;
+    position: initial;
+}
+.st-danghoc{
+    color: yellow;
+}
+
+.st-chuahoc{
+    color: red;
+}
+
+.st-dahoc{
+    color: green;
+}
+
+.line__percent{
+    font-size: 50px !important;
+}
+
+.svg-chart{
+    //padding: 0 30px;
+    height: 200px;
+}
+
+.content-dashboard{
+
+}
+
+.content-dashboard .title-ds{
+	font-size: 1.1rem;
+	background: #269ed8;
+	text-transform: uppercase;
+	color: #fff;
+	padding: 3px;
+    margin-left: 15px;
+}
+
+.content-dashboard .l-text{
+	font-size: 16px;
+	color: #044d81;
+	font-weight: 600;
+
+}
+
+.content-dashboard .btn-view-more{
+	font-size: 14px;
+    background: #0660ac;
+    color: white;
+    border-radius: 5px;
+    padding: 3px 5px;
+    text-decoration: none;
+}
+
+.content-dashboard .btn-view-more:hover{
+	background: #014c8c;
+}
+
+.content-dashboard .content-left{
+	margin: 5px;
+
+    padding: 20px;
+}
+
+.content-dashboard .content-left .class-khm{
+	background: #3c4d5c;
+    color: white;
+    padding: 3px;
+    font-size: 1em;
+    margin-bottom: 0;
+}
+
+.content-dashboard table{
+	font-size: 12px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.content-dashboard table tr td, .content-dashboard table thead th{
+	border: 1px solid #d5d5d5;
+	padding: 2px;
+	text-align: center;
+}
+
+.content-dashboard .content-left .total-register{
+    font-size: 12px;
+
+}
+
+#overlay{
+    width: 50%;
+    height: 25px;
+    margin: auto;
+    border-radius: 5px;
+    border: 1px solid #6198c7;
+}
+
+#progstat{
+    background: green;
+    height: 24px;
+    font-size: 18px;
+    text-align: center;
+    color: #000;
+    border-radius: 5px 0px 0px 5px;
+}
+
+#ht-ch{
+    text-align: center;
+    margin: 10px;
+}

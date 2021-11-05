@@ -1,0 +1,67 @@
+@CHARSET "UTF-8";
+
+.category-icon{
+	box-shadow: 2px 2px 1px rgba(84,84,84,0.1);
+	text-align: center;
+	padding: 10px 10px 15px 10px;
+	border-left: 1px solid #eeeeee;
+	border-top: 3px solid #c41425;
+}
+
+.category-icon a{
+	display: block;
+	font-size: 18px;
+	font-weight: 700;
+	text-decoration: none;
+	color: #333;
+}
+
+.category-icon a:hover{
+	text-decoration: none;
+}
+
+.category-icon .glyphicon,
+.category-icon .fa
+{
+	font-size: 50px;
+	color: #0066b3;
+}
+
+.backend-container {
+    min-height: 500px;
+}
+
+.nav-tabs {
+    padding: 10px 0;
+}
+
+.nav-pills .nav-link {
+    text-transform: capitalize;
+}
+
+.nav-pills .nav-link:hover {
+    color: #fff !important;
+    background-color: #007bff;
+}
+
+.control-label label{
+    font-weight: bold;
+}
+
+.select2-container .select2-selection--single {
+    height: unset !important;
+    border: 1px solid #ced4da !important;
+    font-size: 14px !important;
+}
+
+.box-hidden {
+    display: none;
+}
+
+#image-review {
+    border: dashed 1px;
+}
+
+#image-review img {
+    width: 100%;
+}

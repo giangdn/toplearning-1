@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/trainingbytitle",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\TrainingByTitle\\Providers\\TrainingByTitleServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\TrainingByTitle\\": ""
+        }
+    }
+}

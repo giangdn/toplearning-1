@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/movetrainingprocess",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\MoveTrainingProcess\\Providers\\MoveTrainingProcessServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\MoveTrainingProcess\\": ""
+        }
+    }
+}

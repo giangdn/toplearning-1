@@ -1,0 +1,36 @@
+<?php 
+
+        return[ 
+'languages' => 'Languages', 
+'addnew' => 'Add new', 
+'synchronized' => 'Synchronized', 
+'vietnamese_content' => 'Vietnamese content', 
+'type_keyword' => 'Type keyword', 
+'search' => 'Search', 
+'keyword' => 'Keyword', 
+'delete' => 'Delete', 
+'export' => 'Export', 
+'english_content' => 'English content', 
+'info' => 'Info', 
+'save' => 'Save', 
+'cancel' => 'Cancel', 
+'summary' => 'Summary', 
+'situations_proccessing' => 'Situations proccessing', 
+'user_take_leave' => 'user_take_leave', 
+'note' => 'Note', 
+'detail' => 'Detail', 
+'summary_dashboard' => 'Summary', 
+'disable' => 'Disable', 
+'enable' => 'Enable', 
+'copy' => 'Copy', 
+'creator' => 'Creator', 
+'editor' => 'Editor', 
+'system_error' => 'System error', 
+'min_one_course' => 'Please choose a course minimize', 
+'open' => 'Open', 
+'export_excel' => 'Export excel', 
+'import' => 'Import', 
+'import_template' => 'Import template', 
+];
+
+        ?>

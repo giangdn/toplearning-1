@@ -1,0 +1,14 @@
+{
+    "name": "MergeSubject",
+    "alias": "mergesubject",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\MergeSubject\\Providers\\MergeSubjectServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

@@ -1,0 +1,22 @@
+.custom-form-template{
+    padding-top: 120px;
+    padding-bottom: 10px;
+}
+.custom-form-template #custom-template{
+    padding-left: 30px;
+}
+
+.custom-form-template .custom-question-rating{
+    padding-left: 30px;
+}
+.custom-form-template .custom-answer-rating{
+    padding-left: 35px;
+}
+
+.custom-form-template .custom-category-template {
+    padding-left: 30px;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-style: italic;
+    
+}

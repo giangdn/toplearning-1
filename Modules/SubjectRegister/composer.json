@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/subjectregister",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\SubjectRegister\\Providers\\SubjectRegisterServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\SubjectRegister\\": ""
+        }
+    }
+}

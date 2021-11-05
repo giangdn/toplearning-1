@@ -1,0 +1,41 @@
+.single-image {
+    padding: 10px;
+    background: #f1f1f1;
+    display: inline-block;
+    border-radius: 3px;
+    vertical-align: bottom;
+}
+#logo #image-review{
+    border: none!important;
+}
+.single-image>.image-holder {
+    cursor: default;
+    margin: 0;
+    border-radius: 3px;
+}
+
+.image-holder {
+    position: relative;
+    float: left;
+    height: 155px;
+    width: 155px;
+    overflow: hidden;
+    background: #fff;
+    margin: 0 10px 10px 0;
+    border: 1px solid #d2d6de;
+    border-radius: 3px;
+    cursor: move;
+    z-index: 0;
+}
+.image-holder>i, .image-holder>img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+}
+.image-holder>i {
+    font-size: 60px;
+    color: #d9d9d9;
+    z-index: -1;
+}

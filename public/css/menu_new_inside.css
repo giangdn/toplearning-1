@@ -1,0 +1,53 @@
+.navbar {
+    width: 100%;
+    background: #1b4486;
+}
+.navbar-nav li:hover > ul.dropdown-menu {
+    display: block;
+}
+.dropdown-submenu {
+    position: relative;
+}
+.dropdown-submenu > .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+}
+
+/* rotate caret on hover */
+.dropdown-menu > li > a:hover:after {
+    text-decoration: underline;
+    transform: rotate(-90deg);
+}
+.nav-link {
+    color: white !important;
+    font-size: 15px !important;
+    font-weight: 500;
+}
+.nav-link:hover {
+    color: #007bff !important;
+}
+.dropdown-menu {
+    border: none;
+    top: 90%;
+    padding: 0px;
+}
+.dropdown-submenu:hover {
+    background: #1b4486 !important;
+}
+.dropdown-submenu:hover a {
+    color: white !important;
+    background: #1b4486 !important;
+}
+.dropdown-item {
+    font-size: 15px;
+}
+@media (max-width: 450px) {
+    .all_cate_news {
+        border: none !important;
+    }
+    .body_news .all_cate_news ul li {
+        padding: 0px 4px;
+        margin: 3px 0px;
+    }
+}

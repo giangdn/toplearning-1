@@ -1,0 +1,14 @@
+{
+    "name": "AuthorizedUnit",
+    "alias": "authorizedunit",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\AuthorizedUnit\\Providers\\AuthorizedUnitServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

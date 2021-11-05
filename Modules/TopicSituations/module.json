@@ -1,0 +1,14 @@
+{
+    "name": "TopicSituations",
+    "alias": "topicsituations",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\TopicSituations\\Providers\\TopicSituationsServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

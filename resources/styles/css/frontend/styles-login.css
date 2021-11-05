@@ -1,0 +1,139 @@
+.header{
+    margin-top: 100px;
+    text-align: center;
+    display: inline-block;
+    width: 100%;
+    /*padding: 50px;*/
+}
+
+.row-login{
+    padding-bottom: 20px;
+    background: rgba(255, 255, 255, 0.76);
+}
+
+.header h1 {
+    color: #6baf42;
+    font-size: 30px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.header p {
+    font-size: 14px;
+    color: #58595b;
+    font-weight: 200;
+}
+
+#content-login{
+    /*padding: 0 100px 50px;*/
+}
+
+#content-login .login-form-wrap {
+    padding: 30px 0;
+    border-top: 1px solid #c4c4c4;
+    border-bottom: 1px solid #c4c4c4;
+    font-size: 14px;
+}
+
+#content-login .login-wrap form {
+    border-top: 1px solid #9A9A9A;
+    border-bottom: 1px solid #9A9A9A;
+}
+
+#content-login input.login-input {
+    padding: 20px 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+#content-login .remember-wrap {
+    margin-bottom: 5px;
+}
+
+#content-login .login-sub-btn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#content-login .login-sub-btn a {
+    margin: 0 20px;
+    color: #959595;
+    font-weight: 200;
+    font-size: 12px;
+}
+
+#content-login .btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#content-login .btn.btn-ghost {
+    border-radius: 0;
+    background-color: transparent;
+    border: 1px solid #000;
+    color: #000;
+    position: relative;
+}
+
+.btn.btn-ghost.purple {
+    border: 1px solid #812990;
+    color: #6baf42;
+}
+
+.btn-login {
+    border: 1px solid #6baf42 !important;
+    display: block;
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.btn-login:hover{
+    background: #6baf42 !important;
+    color: white !important;
+}
+
+header .main-menu .navbar-collapse form .btn-search{
+    border: 1px solid #ccc;
+}
+
+header .main-menu .navbar-collapse form .btn-search:hover{
+    border: 1px solid #ccc;
+}
+
+header .main-menu .navbar-collapse form .input-search:hover{
+    border: 1px solid rgba(0,0,0,.15);
+}
+
+@media (max-width: 414px)
+{
+    .header{
+        margin-top: 20px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    main .content-main{
+        padding: 0;
+    }
+}

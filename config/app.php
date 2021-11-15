@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://top.me'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -171,7 +171,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-         App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
@@ -232,12 +232,12 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Visitor' => Shetabit\Visitor\Facade\Visitor::class,
-//        'Socialite' => SocialiteProviders\Manager\ServiceProvider::class,
+        //        'Socialite' => SocialiteProviders\Manager\ServiceProvider::class,
     ],
 
     'datafile' => [
         'path' => env('APP_STORAGE'),
-        'public_url' => env('APP_STORAGE_PUBLIC', '/uploads'),
+        'public_url' => env('APP_STORAGE_PUBLIC', 'uploads'),
         'upload_disk' => env('APP_UPLOAD_DISK', 'upload'),
     ],
 
@@ -258,13 +258,13 @@ return [
     'ffprobe' => [
         'binaries' => env('FFPROBE_BINARIES', ''),
     ],
-    'azure'=>[
-        'client_id'             =>env('AZURE_CLIENT_ID',''),
-        'client_secret'         =>env('AZURE_CLIENT_SECRET',''),
-        'redirect'              =>env('AZURE_REDIRECT',''),
-        'client_id_mobi'        =>env('AZURE_CLIENT_ID_MOBI',''),
-        'client_secret_mobi'    =>env('AZURE_CLIENT_SECRET_MOBI',''),
-        'redirect_mobi'         =>env('AZURE_REDIRECT_MOBI',''),
+    'azure' => [
+        'client_id'             => env('AZURE_CLIENT_ID', ''),
+        'client_secret'         => env('AZURE_CLIENT_SECRET', ''),
+        'redirect'              => env('AZURE_REDIRECT', ''),
+        'client_id_mobi'        => env('AZURE_CLIENT_ID_MOBI', ''),
+        'client_secret_mobi'    => env('AZURE_CLIENT_SECRET_MOBI', ''),
+        'redirect_mobi'         => env('AZURE_REDIRECT_MOBI', ''),
     ],
 
 

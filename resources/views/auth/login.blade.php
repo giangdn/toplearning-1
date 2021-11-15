@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,8 +15,8 @@
     <!-- Favicon Icon -->
     <link rel="icon" type="image/png" href="{{ image_file(\App\Config::getFavicon()) }}">
     <script type="text/javascript">
-        var base_url = '{{ url('/') }}';
-    </script>    <!-- Stylesheets -->
+        var base_url = '{{ url(' / ') }}';
+    </script> <!-- Stylesheets -->
     <link href='{{ asset('css/font_roboto_400_700_500.css') }}' rel='stylesheet'>
     <link href="{{ mix('css/theme.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login2.css') }}" rel="stylesheet">
@@ -25,23 +26,28 @@
         body {
             overflow: hidden;
         }
-        .sign_form{
+
+        .sign_form {
             width: 50%;
         }
-        .text-choose-login, #form_login_elearning{
+
+        .text-choose-login,
+        #form_login_elearning {
             width: 75%;
             margin: auto;
         }
+
         .datepicker {
             box-sizing: border-box;
         }
+
         h3 {
             font-size: 1.28571429rem;
         }
 
-        .title-with-border{
+        .title-with-border {
             position: relative;
-            font-family: 'Josefin Sans','Nexa-Regular', sans-serif !important;
+            font-family: 'Josefin Sans', 'Nexa-Regular', sans-serif !important;
             margin: 0;
             text-align: center;
             text-transform: uppercase;
@@ -52,7 +58,8 @@
             font-size: 30px;
             padding-top: 15px
         }
-        .e_learning_viet_a{
+
+        .e_learning_viet_a {
             font-family: 'Nexa-Regular', sans-serif !important;
             font-weight: 500;
             font-size: 20px;
@@ -68,7 +75,8 @@
             width: 100%;
             text-align: left;
         }
-        .btn:hover{
+
+        .btn:hover {
             background: #E53336 !important;
         }
     </style>
@@ -87,22 +95,22 @@
         };
         if(isMobile()==true){
             window.location = 'https://{{config('app.mobile_url')}}';
-        }
+    }
     </script>--}}
 </head>
 
 <body>
-@php
+    @php
     $img = \App\LoginImage::where('status', '=', 1)->where('type',1)->get();
     $app_android = \App\AppMobile::where('type', '=', 1)->first();
     $app_apple = \App\AppMobile::where('type', '=', 2)->first();
     $url = session()->get('url_previous') ? session()->get('url_previous') : '';
-@endphp
-<!-- Signup Start -->
+    @endphp
+    <!-- Signup Start -->
     <div id="carouselExampleControls" class="carousel slide w-100" data-ride="carousel">
         <div class="carousel-inner vh-100">
             @foreach($img as $key => $slider)
-                <div class="carousel-item h-100 {{ $key == 0 ? 'active' : '' }}" style="background:url({{ $img ? image_file($slider->image) : asset('/images/img-login.jpg')}}) no-repeat center; background-size:cover"></div>
+            <div class="carousel-item h-100 {{ $key == 0 ? 'active' : '' }}" style="background:url({{ $img ? image_file($slider->image) : asset('/images/img-login.jpg')}}) no-repeat center; background-size:cover"></div>
             @endforeach
         </div>
     </div>
@@ -120,28 +128,28 @@
                     <div class="e_learning_viet_a mb-3">Vui lòng chọn tài khoản đăng nhập</div>
                     <div class="text-choose-login">
                         <div>
-                        <a href="{{route('login.provider','azure')}}" class="btn button-regular text-black login_microsoft">
-                            <div class="row">
-                                <div class="col-2">
-                                    <img src="{{ asset('images/icon_microsoft.png') }}" alt="" class="mr-2" style="width: 40px; height: 40px">
+                            <a href="{{route('login.provider','azure')}}" class="btn button-regular text-black login_microsoft">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <img src="{{ asset('images/icon_microsoft.png') }}" alt="" class="mr-2" style="width: 40px; height: 40px">
+                                    </div>
+                                    <div class="col-10 title_login pl-0">
+                                        <span style="font-size: medium">Đăng nhập bằng tài khoản máy tính/Email cá nhân</span>
+                                    </div>
                                 </div>
-                                <div class="col-10 title_login pl-0">
-                                    <span style="font-size: medium">Đăng nhập bằng tài khoản máy tính/Email cá nhân</span>
-                                </div>
-                            </div>
-                        </a>
+                            </a>
                         </div>
                         <div class="mt-3">
-                        <a href="javascript:void(0)" class="btn button-regular text-black login_elearning">
-                            <div class="row">
-                                <div class="col-2">
-                                    <img src="{{ asset('images/icon_hub.png') }}" alt="" class="mr-2" style="width: 40px; height: 40px">
+                            <a href="javascript:void(0)" class="btn button-regular text-black login_elearning">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <img src="{{ asset('images/icon_hub.png') }}" alt="" class="mr-2" style="width: 40px; height: 40px">
+                                    </div>
+                                    <div class="col-10 title_login pl-0">
+                                        <span style="font-size: medium">Đăng nhập bằng tài khoản Learning Hub</span>
+                                    </div>
                                 </div>
-                                <div class="col-10 title_login pl-0">
-                                    <span style="font-size: medium">Đăng nhập bằng tài khoản Learning Hub</span>
-                                </div>
-                            </div>
-                        </a>
+                            </a>
                         </div>
                     </div>
                     <form action="{{ route('login') }}" method="post" class="form-ajax" autocomplete="off" id="form_login_elearning">
@@ -164,111 +172,112 @@
                             </button>
                         </div>
                     </form>
-                   {{-- <p class="pt-2 text-center">
+                    {{-- <p class="pt-2 text-center">
                         <a href="javascript:void(0)" class="text-dark" id="reset-pass" data-url="{{ route('auth.modal_reset_pass') }}">{{ data_locale('Quên mật khẩu?', 'Forgot Password?') }}</a>
                     </p>--}}
                     {{-- <div class="row">
                         <div class="col-6 text-center">
                             @if($app_android)
                                 <a href="{{ $app_android->link }}" target="_blank" class="w-100">
-                                    <img src="{{ image_file($app_android->image) }}" alt="">
-                                </a>
-                            @endif
-                        </div>
-                        <div class="col-6">
-                            @if($app_apple)
-                                <a href="{{ $app_apple->link }}" target="_blank" class="w-100">
-                                    <img src="{{ image_file($app_apple->image) }}" alt="">
-                                </a>
-                            @endif
-                        </div>
-                    </div> --}}
+                    <img src="{{ image_file($app_android->image) }}" alt="">
+                    </a>
+                    @endif
+                </div>
+                <div class="col-6">
+                    @if($app_apple)
+                    <a href="{{ $app_apple->link }}" target="_blank" class="w-100">
+                        <img src="{{ image_file($app_apple->image) }}" alt="">
+                    </a>
+                    @endif
+                </div>
+            </div> --}}
 
-                </div>
-                <div class="row mt-5">
-                    <div class="col-12 text-center">
-                        @if($app_android)
-                            <a href="{{ $app_android->link }}" target="_blank" class="" style="background: #313131 url({{ image_file($app_android->image) }}); display: inline-block; width: 132px; height: auto; min-height: 42px; vertical-align: middle; margin: 0 auto; margin-right: 7px; -webkit-border-radius: 10px"></a>
-                        @endif
-                        @if($app_apple)
-                            <a href="{{ $app_apple->link }}" target="_blank" class="" style="background: #313131 url({{ image_file($app_apple->image) }}); display: inline-block; width: 132px; height: auto; min-height: 42px; vertical-align: middle; margin: 0 auto; margin-right: 7px; -webkit-border-radius: 10px"></a>
-                        @endif
-                    </div>
-                </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                @if($app_android)
+                <a href="{{ $app_android->link }}" target="_blank" class="" style="background: #313131 url({{ image_file($app_android->image) }}); display: inline-block; width: 132px; height: auto; min-height: 42px; vertical-align: middle; margin: 0 auto; margin-right: 7px; -webkit-border-radius: 10px"></a>
+                @endif
+                @if($app_apple)
+                <a href="{{ $app_apple->link }}" target="_blank" class="" style="background: #313131 url({{ image_file($app_apple->image) }}); display: inline-block; width: 132px; height: auto; min-height: 42px; vertical-align: middle; margin: 0 auto; margin-right: 7px; -webkit-border-radius: 10px"></a>
+                @endif
             </div>
         </div>
     </div>
-<!-- Signup End -->
+    </div>
+    </div>
+    <!-- Signup End -->
 
-<div id="app-modal"></div>
+    <div id="app-modal"></div>
 
-<script type="text/javascript">
-    var url = '<?php echo $url ?>';
-    console.log(url);
+    <script type="text/javascript">
+        var url = '<?php echo $url ?>';
+        console.log(url);
 
-    $('#form_login_elearning').hide();
+        $('#form_login_elearning').hide();
 
-    $('.login_elearning').on('click', function () {
-        $('#form_login_elearning').show();
-    });
+        $('.login_elearning').on('click', function() {
+            $('#form_login_elearning').show();
+        });
 
-    $("#id_email").on('click',function(){
-        $('.icon_username').hide();
-        $('.user_name_login').attr('style', 'padding-left: 2em !important');
-    });
+        $("#id_email").on('click', function() {
+            $('.icon_username').hide();
+            $('.user_name_login').attr('style', 'padding-left: 2em !important');
+        });
 
-    $("#id_password").on('click',function(){
-        $('.icon_password').hide();
-        $('.password_login').attr('style', 'padding-left: 2em !important');
-    });
+        $("#id_password").on('click', function() {
+            $('.icon_password').hide();
+            $('.password_login').attr('style', 'padding-left: 2em !important');
+        });
 
-    function outUsername() {
-        $('.icon_username').show();
-        $('.user_name_login').attr('style', 'padding-left: 4em !important');
-    }
+        function outUsername() {
+            $('.icon_username').show();
+            $('.user_name_login').attr('style', 'padding-left: 4em !important');
+        }
 
-    function outPassword() {
-        $('.icon_password').show();
-        $('.password_login').attr('style', 'padding-left: 4em !important');
-    }
+        function outPassword() {
+            $('.icon_password').show();
+            $('.password_login').attr('style', 'padding-left: 4em !important');
+        }
 
-    $("#reset-pass").on('click', function () {
-        let url = $(this).data('url');
-        $.ajax({
-            type: 'GET',
-            url: url,
-            dataType: 'html',
-            data: {},
-        }).done(function(data) {
-            $("#app-modal").html(data);
-            $("#app-modal #modal-reset-pass").modal();
+        $("#reset-pass").on('click', function() {
+            let url = $(this).data('url');
+            $.ajax({
+                type: 'GET',
+                url: url,
+                dataType: 'html',
+                data: {},
+            }).done(function(data) {
+                $("#app-modal").html(data);
+                $("#app-modal #modal-reset-pass").modal();
 
-        }).fail(function(data) {
-            show_message('Lỗi dữ liệu', 'error');
+            }).fail(function(data) {
+                show_message('Lỗi dữ liệu', 'error');
+                return false;
+            });
             return false;
         });
-        return false;
-    });
 
-    $('.datepicker').datetimepicker({
-        locale: 'vi',
-        format: 'DD/MM/YYYY'
-    });
+        $('.datepicker').datetimepicker({
+            locale: 'vi',
+            format: 'DD/MM/YYYY'
+        });
 
-    $('.select2').select2({
-        allowClear: true,
-        dropdownAutoWidth : true,
-        width: '100%',
-        placeholder: function(params) {
-            return {
-                id: null,
-                text: params.placeholder,
-            }
-        },
-    });
-</script>
+        $('.select2').select2({
+            allowClear: true,
+            dropdownAutoWidth: true,
+            width: '100%',
+            placeholder: function(params) {
+                return {
+                    id: null,
+                    text: params.placeholder,
+                }
+            },
+        });
+    </script>
 
-<script type="text/javascript" src="{{ asset('js/theme3.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/theme3.js') }}"></script>
 
 </body>
+
 </html>

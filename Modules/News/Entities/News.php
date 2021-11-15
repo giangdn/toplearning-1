@@ -4,6 +4,7 @@ namespace Modules\News\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use App\BaseModel;
+use App\CacheModel;
 use App\Traits\ChangeLogs;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +48,7 @@ use App\Models\Categories\Unit;
  * @method static \Illuminate\Database\Eloquent\Builder|News whereUserView($value)
  * @method static \Illuminate\Database\Eloquent\Builder|News whereViewTime($value)
  */
-class News extends BaseModel
+class News extends CacheModel
 {
     protected $table = 'el_news';
     protected $fillable = [
@@ -71,7 +72,8 @@ class News extends BaseModel
         'like_new'
     ];
 
-    public static function getAttributeName() {
+    public static function getAttributeName()
+    {
         return [
             'title' => 'Tiêu đề',
             'content' => 'Nội dung',
@@ -79,49 +81,54 @@ class News extends BaseModel
             'views' => 'Lượt xem',
             'category_id' => 'Danh mục',
             'category_parent_id' => 'Danh mục cha',
-            'status'=>'Trang thái',
+            'status' => 'Trang thái',
             'created_by' => 'Ngày tạo',
             'updated_by' => 'Ngày sửa',
             'type' => 'Thể loại',
         ];
     }
 
-    public static function updateItemViews($id){
+    public static function updateItemViews($id)
+    {
         $news = News::find($id);
 
         DB::table('el_news')
-        ->where('id',$id)
-        ->update([
-            'views' => $news->views + 1,
-            'user_view' => \Auth::id(),
-            'view_time' => date('Y-m-d H:i:s'),
-        ]);
+            ->where('id', $id)
+            ->update([
+                'views' => $news->views + 1,
+                'user_view' => \Auth::id(),
+                'view_time' => date('Y-m-d H:i:s'),
+            ]);
 
-        NewsStatistic::update_news_insert_statistic(0,$id);
+        NewsStatistic::update_news_insert_statistic(0, $id);
     }
 
-    public static function getViewsMax($length = 3){
+    public static function getViewsMax($length = 3)
+    {
         $query = self::query();
         $query->orderBy('views', 'DESC');
         $query->limit($length);
         return $query->get();
     }
 
-    public static function getNewsCategory($category_id, $current_id = 0){
+    public static function getNewsCategory($category_id, $current_id = 0)
+    {
         $query = self::query();
         $query->where('category_id', '=', $category_id);
         $query->where('id', '!=', $current_id);
         return $query->get();
     }
 
-    public static function getLasterNews($length = 5){
+    public static function getLasterNews($length = 5)
+    {
         $query = self::query();
         $query->orderBy('created_at', 'DESC');
         $query->limit($length);
         return $query->get();
     }
 
-    public static function getNewsHotLaster(){
+    public static function getNewsHotLaster()
+    {
         $query = self::query();
         $query->where('hot', '=', 1);
         $query->orderBy('created_at', 'DESC');
@@ -134,20 +141,22 @@ class News extends BaseModel
 
         $query = self::query();
         $query->where('hot', '=', 1);
-        if ($hot_laster){
+        if ($hot_laster) {
             $query->where('id', '!=', $hot_laster->id);
         }
         $query->orderBy('created_at', 'DESC');
         return $query->get();
     }
 
-    public static function getAllByViews(){
+    public static function getAllByViews()
+    {
         $query = self::query();
         $query->orderBy('views', 'DESC');
         return $query->paginate(10);
     }
 
-    public static function getNewsNew(){
+    public static function getNewsNew()
+    {
         $sub3day = now()->subDays(3);
 
         $query = self::query();

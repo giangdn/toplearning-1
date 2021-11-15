@@ -21,6 +21,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \App\Http\Middleware\Localization::class,
+        \App\Http\Middleware\RenderMiddleware::class,
     ];
 
     /**
@@ -90,5 +91,6 @@ class Kernel extends HttpKernel
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
         \App\Http\Middleware\Localization::class,
+        \App\Http\Middleware\RenderMiddleware::class,
     ];
 }

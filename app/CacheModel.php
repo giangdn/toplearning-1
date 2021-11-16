@@ -15,9 +15,14 @@ use Rennokki\QueryCache\Traits\QueryCacheable;
 class CacheModel extends BaseModel
 {
     use QueryCacheable;
-    public $cacheFor = 31557600;
+
+    // initial propeties for caching stuff
+    public $cacheFor = 31557600; // a year
     public $cacheDriver = '';
     public $cachePrefix = '';
+
+    // by default, flush cache on update
+    protected static $flushCacheOnUpdate = true;
 
     public function __construct()
     {
@@ -27,17 +32,23 @@ class CacheModel extends BaseModel
         $this->cacheDriver = config('cache.default', 'memcached');
 
         // default prefix by called-model
-        $this->cachePrefix = $this->_friendlyName();
+        $this->cachePrefix = $this->_friendlyOwnName();
     }
 
-    public function _friendlyName()
+    protected function getCacheBaseTags(): array
     {
-        //nomal name
+        return [$this->_friendlyOwnName()];
+    }
+
+    private function _friendlyOwnName(): string
+    {
+        //php class name
         $name = get_called_class();
 
-        //friendly name
+        //friendly readable name
         $name = str_replace('\\', '.', $name);
 
+        // lower the name
         return strtolower($name);
     }
 }

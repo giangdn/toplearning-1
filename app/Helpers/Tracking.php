@@ -20,7 +20,7 @@ class Tracking
         Cache::put(self::key($scope), $items);
     }
 
-    public static function dump($scope = 'db')
+    public static function dump($scope = 'db', $clean = false)
     {
         $items = self::all($scope);
         if (
@@ -35,12 +35,19 @@ class Tracking
                 $numItem++;
                 $totalTime += $item->time;
             }
-            self::mark("items: $numItem | ∑ time: " . number_format($totalTime, 2), $scope);
-            self::clean($scope);
+            self::mark("# items: $numItem | ∑ time: " . number_format($totalTime, 2), $scope);
+            $clean && self::clean($scope);
         }
     }
 
-    public static function dumpSlow($scope, $longerThan = '100')
+    /**
+     * dump the slow executions
+     *
+     * @param string $scope
+     * @param integer $longerThan
+     * @param boolean $clean
+     */
+    public static function dumpSlow($scope, $longerThan = 100, $clean = true)
     {
         $items = self::all($scope);
         if (
@@ -60,15 +67,16 @@ class Tracking
                 }
             }
 
-            self::mark("slow items: $numItem | ∑ time: " . number_format($totalTime, 2), $scope);
+            self::mark("# slow items: $numItem | ∑ time: " . number_format($totalTime, 2), $scope);
+            $clean && self::clean($scope);
         }
     }
 
     private static function mark($message, $scope)
     {
-        self::log('##############################', $scope);
+        self::log('###################################', $scope);
         self::log($message, $scope);
-        self::log('##############################', $scope);
+        self::log('###################################', $scope);
     }
 
     private static function all($scope)
@@ -79,6 +87,7 @@ class Tracking
     private static function clean($scope = 'db')
     {
         try {
+            Log::error('cleannnnnnnnn');
             Cache::put(self::key($scope), []);
         } catch (\Exception $e) {
             Log::error($e->getMessage());

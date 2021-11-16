@@ -12,7 +12,7 @@ class RenderMiddleware
     {
         $response = $next($request);
         if (config('app.debug', false)) {
-            $scopes = ['db', 'app', 'lay'];
+            $scopes = ['db', 'app', 'lay', 'event'];
 
             foreach ($scopes as $scope) {
                 Tracking::dump($scope);

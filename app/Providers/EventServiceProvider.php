@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use App\Helpers\Tracking;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
@@ -41,9 +40,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        $isDebug = config('app.debug', false);
-
-        if ($isDebug) {
+        if (config('app.debug', false)) {
             // app events depend on the eloquent trigger
             Event::listen('eloquent.*', function ($eventName) {
                 Tracking::put((object) ['event' => $eventName], 'app');
@@ -57,6 +54,16 @@ class EventServiceProvider extends ServiceProvider
             // layout compose events
             Event::listen('composing:*', function ($eventName) {
                 Tracking::put((object) ['event' => $eventName], 'lay');
+            });
+
+            // all events tracking trail
+            Event::listen([
+                '*.*',
+                'creating:*',
+                'composing:*',
+                'bootstrapped:*'
+            ], function ($eventName) {
+                Tracking::put((object) ['event' => $eventName], 'event');
             });
         }
     }

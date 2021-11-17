@@ -98,7 +98,7 @@ use App\ProfileView;
  * @property int|null $title_id
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereTitleId($value)
  */
-class Profile extends Model
+class Profile extends CacheModel
 {
     use ChangeLogs;
     protected $table = 'el_profile';
@@ -139,27 +139,28 @@ class Profile extends Model
         'end_date_title_appointment',
         'marriage'
     ];
-//    protected $primaryKey = 'user_id';
+    //    protected $primaryKey = 'user_id';
 
     public function user()
     {
-        return $this->belongsTo('App\User','id');
+        return $this->belongsTo('App\User', 'id');
     }
 
     public function titles()
     {
-        return $this->belongsTo('App\Models\Categories\Titles','title_code','code');
+        return $this->belongsTo('App\Models\Categories\Titles', 'title_code', 'code');
     }
 
     public function unit()
     {
-        return $this->belongsTo('App\Models\Categories\Unit','unit_code','code');
+        return $this->belongsTo('App\Models\Categories\Unit', 'unit_code', 'code');
     }
 
-    public function getAvatar() {
+    public function getAvatar()
+    {
         if (empty($this->avatar)) {
             return asset('/images/user_tt.png');
-        }else{
+        } else {
             $fileExists =  upload_file('profile/' . $this->avatar);
             if ($fileExists)
                 return $fileExists;
@@ -168,7 +169,8 @@ class Profile extends Model
         }
     }
 
-    public function scopeInUnit($query, $unit) {
+    public function scopeInUnit($query, $unit)
+    {
         if (is_array($unit)) {
             return $query->whereIn('unit_code', function (Builder $builder) use ($unit) {
                 $builder->select(['code'])
@@ -184,60 +186,62 @@ class Profile extends Model
         });
     }
 
-    public function getFullName() {
-        return $this->id ? $this->lastname .' '. $this->firstname : '';
+    public function getFullName()
+    {
+        return $this->id ? $this->lastname . ' ' . $this->firstname : '';
     }
 
-    public function scopeView($query, $alias='')
+    public function scopeView($query, $alias = '')
     {
-        if (Auth::id() == 2){
+        if (Auth::id() == 2) {
             return $query;
         }
 
-        $user = Profile::find(\Auth::id());
-        $alias = $alias? $alias.".":$alias;
+        $user = Profile::find(Auth::id());
+        $alias = $alias ? $alias . "." : $alias;
         $unit_code = $user->unit_code;
-        $unit_id = Unit::query()->where('code','=',$unit_code)->value('id');
+        $unit_id = Unit::query()->where('code', '=', $unit_code)->value('id');
 
         $role_id = $user->roles()->value('id');
-        $level = Unit::query()->where('id','=',$unit_id)->value('level');
+        $level = Unit::query()->where('id', '=', $unit_id)->value('level');
         $permission_id = \Spatie\Permission\Models\Permission::findByName('user')->id;
         $type_view = \DB::query()
-            ->select(['a.permission_type_id','b.name','b.type'])
+            ->select(['a.permission_type_id', 'b.name', 'b.type'])
             ->from('el_role_permission_type as a')
-            ->join('el_permission_type as b','a.permission_type_id','=','b.id')
-            ->where('a.role_id','=',$role_id)
-            ->where('a.permission_id','=',$permission_id)
+            ->join('el_permission_type as b', 'a.permission_type_id', '=', 'b.id')
+            ->where('a.role_id', '=', $role_id)
+            ->where('a.permission_id', '=', $permission_id)
             ->first();
 
         $permission_type_id = $type_view->permission_type_id;
 
-        if ($type_view->type==1){ // nhóm quyền hệ thống
-            if ($type_view->name=='All')
+        if ($type_view->type == 1) { // nhóm quyền hệ thống
+            if ($type_view->name == 'All')
                 return $query;
-            elseif ($type_view->name=='Global')
-                return $query->where($alias.'company','=',$user->company);
-            elseif($type_view->name=='Group-Child')
-                return $query->whereIn('d.id',function ($subquery) use($level,$unit_id){
+            elseif ($type_view->name == 'Global')
+                return $query->where($alias . 'company', '=', $user->company);
+            elseif ($type_view->name == 'Group-Child')
+                return $query->whereIn('d.id', function ($subquery) use ($level, $unit_id) {
                     $subquery->select(['id'])
                         ->from('el_unit')
-                        ->where(\DB::raw('JSON_VALUE(hierarchy,\'$."'.$level.'"\')'),'=',$unit_id);
+                        ->where(\DB::raw('JSON_VALUE(hierarchy,\'$."' . $level . '"\')'), '=', $unit_id);
                 });
-            elseif($type_view->name=='Group')
-                return $query->where('d.id','=',$unit_id);
-            elseif($type_view->name=='owner')
-                return $query->where($alias.'created_by','=',$user->user_id);
-        }else{ // nhóm quyền tùy chỉnh
+            elseif ($type_view->name == 'Group')
+                return $query->where('d.id', '=', $unit_id);
+            elseif ($type_view->name == 'owner')
+                return $query->where($alias . 'created_by', '=', $user->user_id);
+        } else { // nhóm quyền tùy chỉnh
             return $query->whereIn('d.id', function ($subquery) use ($permission_type_id) {
                 $subquery->select(['unit_id'])
                     ->from('el_permission_type_unit')
                     ->where('permission_type_id', '=', $permission_type_id);
-            })->orWhere('d.id','=',$unit_id);
+            })->orWhere('d.id', '=', $unit_id);
         }
         return $query;
     }
 
-    public static function countProfile() {
+    public static function countProfile()
+    {
         return Profile::where('status', '!=', 0)
             ->where('user_id', '>', 2)
             ->count(['id']);
@@ -246,8 +250,8 @@ class Profile extends Model
     public static function generateShuffle()
     {
         $id_code = shuffle_refer();
-        $exists = Profile::where('id_code','=', $id_code)->whereNotNull('id_code') ->exists();
-        if ($exists){
+        $exists = Profile::where('id_code', '=', $id_code)->whereNotNull('id_code')->exists();
+        if ($exists) {
             self::generateShuffle();
         }
         return $id_code;
@@ -256,10 +260,11 @@ class Profile extends Model
     public static function validRefer($referer)
     {
         $user_id = Auth::id();
-        return Profile::where('id_code','=',$referer)->where('user_id','!=',$user_id)->exists();
+        return Profile::where('id_code', '=', $referer)->where('user_id', '!=', $user_id)->exists();
     }
 
-    public static function getAttributeName() {
+    public static function getAttributeName()
+    {
         return [
             'username' => data_locale('Tên đăng nhập', 'Username'),
             'password' => data_locale('Mật khẩu', 'Password'),
@@ -291,7 +296,8 @@ class Profile extends Model
         ];
     }
 
-    public static function fullname($user_id = null) {
+    public static function fullname($user_id = null)
+    {
         if (!Auth::check()) {
             return '';
         }
@@ -299,7 +305,8 @@ class Profile extends Model
         return ProfileView::where('user_id', $user_id)->value('full_name');
     }
 
-    public static function usercode($user_id = null){
+    public static function usercode($user_id = null)
+    {
         if (!Auth::check()) {
             return '';
         }
@@ -309,7 +316,8 @@ class Profile extends Model
         return $user ? $user->code : '';
     }
 
-    public static function email($user_id = null) {
+    public static function email($user_id = null)
+    {
         if (!Auth::check()) {
             return '';
         }
@@ -319,7 +327,8 @@ class Profile extends Model
         return $user ? $user->email : '';
     }
 
-    public static function avatar($user_id = null) {
+    public static function avatar($user_id = null)
+    {
         $user_id = $user_id ?? Auth::id();
         $user = Profile::find($user_id);
         return $user ? $user->getAvatar() : asset('/images/user_tt.png');
@@ -331,27 +340,29 @@ class Profile extends Model
             return false;
         }
         return Auth::user()->roles()->count();
-//        $user_id = empty($user_id) ? Auth::id() : $user_id;
-//        $user = self::where('user_id', $user_id)->whereNotNull('role')->first();
-//        if ($user){
-//            return true;
-//        }
-//        return false;
+        //        $user_id = empty($user_id) ? Auth::id() : $user_id;
+        //        $user = self::where('user_id', $user_id)->whereNotNull('role')->first();
+        //        if ($user){
+        //            return true;
+        //        }
+        //        return false;
     }
     protected $appends = ['full_name'];
-    public function getFullNameAttribute($value){
+    public function getFullNameAttribute($value)
+    {
         return  "{$this->lastname} {$this->firstname}";
     }
-//    public function getGenderAttribute($value){
-//        return   ($value==1?'Nam':'Nữ');
-//    }
+    //    public function getGenderAttribute($value){
+    //        return   ($value==1?'Nam':'Nữ');
+    //    }
 
-//    public function quizpart()
-//    {
-//        return $this->belongsTo(QuizRegister::class,'user_id');
-//    }
+    //    public function quizpart()
+    //    {
+    //        return $this->belongsTo(QuizRegister::class,'user_id');
+    //    }
 
-    public static function usertype($user_id = null){
+    public static function usertype($user_id = null)
+    {
         if (!Auth::check()) {
             return '';
         }
@@ -365,11 +376,11 @@ class Profile extends Model
     {
         $prefix = \DB::getTablePrefix();
         $user_id = Auth::id();
-        $result = Permission::join('el_user_permission_type','el_user_permission_type.permission_id','=','el_permissions.id')
-            ->join('el_permission_type','el_permission_type.id','=','el_user_permission_type.permission_type_id')
-            ->where(['el_user_permission_type.user_id'=>$user_id])
-            ->whereRaw('('.$prefix."el_permissions.model= '$model' or concat(".$prefix."el_permissions.model,'_view')= '$model')")
-            ->select('el_permissions.id','el_permission_type.name','el_permission_type.type','el_permission_type.description','el_user_permission_type.permission_type_id')
+        $result = Permission::join('el_user_permission_type', 'el_user_permission_type.permission_id', '=', 'el_permissions.id')
+            ->join('el_permission_type', 'el_permission_type.id', '=', 'el_user_permission_type.permission_type_id')
+            ->where(['el_user_permission_type.user_id' => $user_id])
+            ->whereRaw('(' . $prefix . "el_permissions.model= '$model' or concat(" . $prefix . "el_permissions.model,'_view')= '$model')")
+            ->select('el_permissions.id', 'el_permission_type.name', 'el_permission_type.type', 'el_permission_type.description', 'el_user_permission_type.permission_type_id')
             ->first();
         return $result;
     }
@@ -377,43 +388,48 @@ class Profile extends Model
     public static function getLevel()
     {
         $user_id = Auth::id();
-        return \DB::table('el_profile')->join('el_unit','el_profile.unit_code','=','el_unit.code')->where('user_id',$user_id)->value('el_unit.level');
+        return \DB::table('el_profile')->join('el_unit', 'el_profile.unit_code', '=', 'el_unit.code')->where('user_id', $user_id)->value('el_unit.level');
     }
 
     public static function getCompany($user_id = null)
     {
         $user_id = empty($user_id) ? Auth::id() : $user_id;
-        return \DB::table('el_profile')->join('el_unit_view','el_profile.unit_code','=','el_unit_view.unit_code')->where('user_id',$user_id)->value('el_unit_view.unit0_id');
+        return \DB::table('el_profile')
+            ->join('el_unit_view', 'el_profile.unit_code', '=', 'el_unit_view.unit_code')
+            ->where('user_id', $user_id)
+            ->value('el_unit_view.unit0_id');
     }
 
     public static function getUnitCode()
     {
         $user_id = Auth::id();
-        return \DB::table('el_profile')->where('user_id',$user_id)->value('unit_code');
+        return \DB::table('el_profile')
+            ->where('user_id', $user_id)
+            ->value('unit_code');
     }
     public static function getUnitId()
     {
         $user_id = Auth::id();
-        return \DB::table('el_profile')->join('el_unit','el_profile.unit_code','el_unit.code')
-            ->where('el_profile.user_id',$user_id)->value('el_unit.id');
+        return \DB::table('el_profile')->join('el_unit', 'el_profile.unit_code', 'el_unit.code')
+            ->where('el_profile.user_id', $user_id)->value('el_unit.id');
     }
     public static function getTItleId()
     {
         $user_id = Auth::id();
-        return \DB::table('el_profile')->where('user_id',$user_id)->value('title_id');
+        return \DB::table('el_profile')->where('user_id', $user_id)->value('title_id');
     }
 
     public static function getUnitManagerByUser()
     {
         $user = \Auth::user();
-        $role =$user->roles()->value('id');
-        $units = \DB::table('el_role_has_permission_type as a')->join('el_permission_type_unit as b','a.permission_type_id','=','b.permission_type_id')
-            ->join('el_unit as c','c.id','=','b.unit_id')->where('a.role_id',$role)->get(['id','code','name']);
-        $data =[];
+        $role = $user->roles()->value('id');
+        $units = \DB::table('el_role_has_permission_type as a')->join('el_permission_type_unit as b', 'a.permission_type_id', '=', 'b.permission_type_id')
+            ->join('el_unit as c', 'c.id', '=', 'b.unit_id')->where('a.role_id', $role)->get(['id', 'code', 'name']);
+        $data = [];
         foreach ($units as $index => $unit) {
             $data[] = (int)$unit->id;
         }
-        $unitmanagers=UnitManager::getUnitManagedByUser();
+        $unitmanagers = UnitManager::getUnitManagedByUser();
         foreach ($unitmanagers as $index => $unitmanager) {
             $data[] = (int)$unitmanager->id;
         }

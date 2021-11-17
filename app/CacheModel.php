@@ -2,24 +2,21 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
  * App\CacheModel
- *
- * @method static \Illuminate\Database\Eloquent\Builder|BaseModel newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BaseModel newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|BaseModel query()
- * @mixin \Eloquent
  */
-class CacheModel extends BaseModel
+class CacheModel extends Model
 {
     use QueryCacheable;
 
     // initial propeties for caching stuff
-    public $cacheFor = 31557600; // a year
+    public $cacheFor = null; // null ~ disable caching
     public $cacheDriver = '';
     public $cachePrefix = '';
+    public $cacheTags = [];
 
     // by default, flush cache on update
     protected static $flushCacheOnUpdate = true;
@@ -27,14 +24,31 @@ class CacheModel extends BaseModel
     public function __construct()
     {
         parent::__construct();
+        if (config('enable_subtance_caching', true)) {
+            $this->cacheFor = 7776000; // 90 days
 
-        // binding config cache
-        $this->cacheDriver = config('cache.default', 'memcached');
+            // binding config cache
+            $this->cacheDriver = config('cache.default', 'memcached');
 
-        // default prefix by called-model
-        $this->cachePrefix = $this->_friendlyOwnName();
+            // default prefix by called-model
+            $this->cachePrefix = $this->_friendlyOwnName();
+
+            // binding table name to the cache tag
+            if (
+                isset($this->table)
+                && is_string($this->table)
+            ) {
+                $this->cacheTags[] = $this->table;
+            }
+        }
     }
 
+    /**
+     * for doing this thing. We can use Model::flushQueryCache();
+     * to flush all the queries cache of the such eloquent model
+     *
+     * @return array
+     */
     protected function getCacheBaseTags(): array
     {
         return [$this->_friendlyOwnName()];

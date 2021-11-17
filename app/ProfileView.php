@@ -102,11 +102,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ProfileView whereFirstname($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ProfileView whereLastname($value)
  */
-class ProfileView extends Model
+class ProfileView extends CacheModel
 {
-    protected $table ='el_profile_view';
+    protected $table = 'el_profile_view';
     public $incrementing = false;
-    protected $fillable=[
+    protected $fillable = [
         'id',
         'code',
         'user_id',

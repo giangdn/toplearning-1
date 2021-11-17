@@ -50,7 +50,7 @@ class HomeController extends Controller
 {
     public function changeLanguage($lang)
     {
-        if (url_mobile()){
+        if (url_mobile()) {
             \App::setLocale($lang);
             session()->put('locale', $lang);
             return redirect()->back();
@@ -87,9 +87,9 @@ class HomeController extends Controller
             })
             ->where('a.status', '=', 1)
             ->where('a.is_open', '=', 1)
-            ->where(function ($sub){
+            ->where(function ($sub) {
                 $sub->orWhere('a.quiz_type', '=', 3);
-                $sub->orWhereIn('a.id', function ($subquery){
+                $sub->orWhereIn('a.id', function ($subquery) {
                     $subquery->select(['quiz_id'])
                         ->from('el_offline_course')
                         ->whereNotNull('quiz_id')
@@ -97,7 +97,7 @@ class HomeController extends Controller
                         ->where('isopen', '=', 1);
                 });
             })
-            ->whereIn('a.id', function ($subquery) use ($user_id, $user_type){
+            ->whereIn('a.id', function ($subquery) use ($user_id, $user_type) {
                 $subquery->select(['quiz_id'])
                     ->from('el_quiz_register')
                     ->where('user_id', '=', $user_id)
@@ -105,7 +105,7 @@ class HomeController extends Controller
             })
             ->count();
 
-        if (url_mobile()){
+        if (url_mobile()) {
             $lay = 'home';
             $laster_thread = ForumThread::getLasterThread();
             $unit_arr = Unit::getTreeParentUnit($profile->unit_code);
@@ -114,9 +114,9 @@ class HomeController extends Controller
             $sliders = Slider::where('status', '=', 1)
                 ->where('type', '=', 2)
                 ->where('location', '!=', 1)
-                ->where(function ($sub) use ($unit_arr){
+                ->where(function ($sub) use ($unit_arr) {
                     $sub->where('location', '=', 0);
-                    foreach ($unit_arr as $item){
+                    foreach ($unit_arr as $item) {
                         $sub->orWhereIn('location', [$item->id]);
                     }
                 })->get();
@@ -140,7 +140,7 @@ class HomeController extends Controller
             $feedbacks = Feedback::get();
 
             EmulationProgram::addGlobalScope(new CompanyScope());
-            $emulation_programs = EmulationProgram::where('status',1)->where('isopen',1)->get();
+            $emulation_programs = EmulationProgram::where('status', 1)->where('isopen', 1)->get();
             $count_my_course = ($count_offline_register + $count_online_register);
 
             return view('themes.mobile.frontend.home', [
@@ -162,42 +162,42 @@ class HomeController extends Controller
                 'teacher_max_point' => $this->getTeacherMaxPoint(),
                 'sliders' => $sliders,
             ]);
-        }else{
+        } else {
             $count_register_course_by_user = ($count_offline_register + $count_online_register);
             $count_complete_course_by_user = DB::table('el_course_complete')->where('user_id', '=', Auth::id())->count();
 
-            $get_register_online = CourseRegisterView::where('course_type',1)->where('user_id',Auth::id())->where('status',1)->pluck('course_id')->toArray();
+            $get_register_online = CourseRegisterView::where('course_type', 1)->where('user_id', Auth::id())->where('status', 1)->pluck('course_id')->toArray();
             $model_online = CourseView::query();
-            $model_online->select(['a.course_id','a.start_date','a.end_date','a.register_deadline','a.name','a.code']);
+            $model_online->select(['a.course_id', 'a.start_date', 'a.end_date', 'a.register_deadline', 'a.name', 'a.code']);
             $model_online->from('el_course_view as a');
-            $model_online->where('a.status',1);
-            $model_online->where('a.course_type',1);
-            $model_online->where('a.isopen',1);
+            $model_online->where('a.status', 1);
+            $model_online->where('a.course_type', 1);
+            $model_online->where('a.isopen', 1);
             $model_online->whereIn('a.course_id', $get_register_online);
             $countMyOnlineCourse = $model_online->get();
             $my_onlCourse = $model_online->take(5)->get();
 
-            $get_register_offline = CourseRegisterView::where('course_type',2)->where('user_id',Auth::id())->where('status',1)->pluck('course_id')->toArray();
+            $get_register_offline = CourseRegisterView::where('course_type', 2)->where('user_id', Auth::id())->where('status', 1)->pluck('course_id')->toArray();
             $model_offline = CourseView::query();
             $model_offline->select(['a.*']);
             $model_offline->from('el_course_view as a');
             $model_offline->whereIn('a.course_id', $get_register_offline);
-            $model_offline->where('a.status',1);
-            $model_offline->where('a.course_type',2);
-            $model_offline->where('a.isopen',1);
+            $model_offline->where('a.status', 1);
+            $model_offline->where('a.course_type', 2);
+            $model_offline->where('a.isopen', 1);
             $countMyOfflineCourse = $model_offline->get();
             $my_offCourse = $model_offline->take(5)->get();
 
-            $my_quiz = QuizRegister::where('user_id',\auth()->id())->count();
-            $userPoint = PromotionUserPoint::where('user_id',\auth()->id());
+            $my_quiz = QuizRegister::where('user_id', \auth()->id())->count();
+            $userPoint = PromotionUserPoint::where('user_id', \auth()->id());
             $point = $userPoint->exists() ? $userPoint->first()->point : 0;
             $chart = $this->getRegisterCourse();
             $notify = NotifySend::getNotifyNew(5);
-            $count_subject_by_level_subject = function ($level_subject_id, $complete = null){
+            $count_subject_by_level_subject = function ($level_subject_id, $complete = null) {
                 $profile = Profile::find(Auth::id());
                 $subQuery = \DB::table('el_training_process')
-                    ->where('user_id','=', $profile->user_id)
-                    ->where('titles_code','=', $profile->title_code)
+                    ->where('user_id', '=', $profile->user_id)
+                    ->where('titles_code', '=', $profile->title_code)
                     ->groupBy('subject_id')
                     ->select([
                         \DB::raw('MAX(id) as id'),
@@ -206,18 +206,18 @@ class HomeController extends Controller
 
                 $query = \DB::query();
                 $query->from("el_trainingroadmap AS a");
-                $query->joinSub($subQuery,'b', function ($join){
+                $query->joinSub($subQuery, 'b', function ($join) {
                     $join->on('b.subject_id', '=', 'a.subject_id');
                 });
-                $query->leftJoin('el_subject as d', function ($join){
+                $query->leftJoin('el_subject as d', function ($join) {
                     $join->on('d.id', '=', 'b.subject_id');
                 });
-                $query->leftJoin('el_training_process as c', function ($join){
+                $query->leftJoin('el_training_process as c', function ($join) {
                     $join->on('c.id', '=', 'b.id');
                 });
                 $query->where('d.level_subject_id', '=', $level_subject_id);
                 $query->where('a.title_id', '=', @$profile->titles->id);
-                if ($complete){
+                if ($complete) {
                     $query->where('c.pass', '=', 1);
                 }
 
@@ -248,50 +248,57 @@ class HomeController extends Controller
         }
     }
 
-    public function countOnline() {
+    public function countOnline()
+    {
         $query = OnlineCourse::query();
         $query->where('status', '=', 1);
         $query->where('isopen', '=', 1);
         return $query->count();
     }
 
-    public function countOffline() {
+    public function countOffline()
+    {
         $query = OfflineCourse::query();
         $query->where('status', '=', 1);
         $query->where('isopen', '=', 1);
         return $query->count();
     }
 
-    public function countBook() {
+    public function countBook()
+    {
         $query = Libraries::query();
         $query->where('type', '=', 1);
         $query->where('status', '=', 1);
         return $query->count();
     }
 
-    public function countEBook() {
+    public function countEBook()
+    {
         $query = Libraries::query();
         $query->where('type', '=', 2);
         $query->where('status', '=', 1);
         return $query->count();
     }
 
-    public function countDocument() {
+    public function countDocument()
+    {
         $query = Libraries::query();
         $query->where('type', '=', 3);
         $query->where('status', '=', 1);
         return $query->count();
     }
 
-    public function countQuiz() {
+    public function countQuiz()
+    {
         $query = Quiz::query();
         $query->where('status', '=', 1);
         return $query->count();
     }
 
-    public function saveCourseBookmark($course_id, $course_type, $my_course){
-        $bookmark = CourseBookmark::where('course_id',$course_id)->where('type',$course_type)->where('user_id',\auth()->id());
-        if (!$bookmark->exists()){
+    public function saveCourseBookmark($course_id, $course_type, $my_course)
+    {
+        $bookmark = CourseBookmark::where('course_id', $course_id)->where('type', $course_type)->where('user_id', \auth()->id());
+        if (!$bookmark->exists()) {
             $model = new CourseBookmark();
             $model->course_id = $course_id;
             $model->type = $course_type;
@@ -301,14 +308,15 @@ class HomeController extends Controller
         if ($course_type == 1 && $my_course == 0) {
             // return redirect()->route('module.online');
             return redirect()->route('frontend.all_course');
-        } else if ($my_course == 1){
-            return redirect()->route('module.frontend.user.my_course',['type' => 0]);
+        } else if ($my_course == 1) {
+            return redirect()->route('module.frontend.user.my_course', ['type' => 0]);
         }
         // return redirect()->route('module.offline');
         return redirect()->route('frontend.all_course');
     }
 
-    public function removeCourseBookmark($course_id, $course_type, $my_course){
+    public function removeCourseBookmark($course_id, $course_type, $my_course)
+    {
         CourseBookmark::query()
             ->where('course_id', '=', $course_id)
             ->where('type', '=', $course_type)
@@ -317,20 +325,22 @@ class HomeController extends Controller
 
         if ($course_type == 1 && $my_course == 0) {
             return redirect()->route('frontend.all_course');
-        } else if ($my_course == 1){
-            return redirect()->route('module.frontend.user.my_course',['type' => 0]);
+        } else if ($my_course == 1) {
+            return redirect()->route('module.frontend.user.my_course', ['type' => 0]);
         }
         return redirect()->route('frontend.all_course');
     }
 
     /*Tổng số user*/
-    public function totalLearners(){
+    public function totalLearners()
+    {
         $count = Profile::where('status', '!=', 0)->where('user_id', '>', 2)->count();
         return $count;
     }
 
     /*Đếm số Khóa học theo tháng*/
-    public function getCourseNew(){
+    public function getCourseNew()
+    {
         $online = OnlineCourse::where('status', '=', 1)
             ->where(\DB::raw('month(start_date)'), '=', date('m'))->count();
 
@@ -341,11 +351,12 @@ class HomeController extends Controller
     }
 
     /*khóa học đang tổ chức*/
-    public function countCourseBeingHeld(){
+    public function countCourseBeingHeld()
+    {
         $now = date('Y-m-d H:i:s');
         $online = OnlineCourse::where('status', '=', 1)
             ->where('start_date', '<=', $now)
-            ->where(function ($sub) use ($now){
+            ->where(function ($sub) use ($now) {
                 $sub->where('end_date', '>=', $now);
                 $sub->orWhereNull('end_date');
             })
@@ -360,7 +371,8 @@ class HomeController extends Controller
     }
 
     /*Lấy điểm cao nhất của học viên*/
-    public function getUserMaxPoint(){
+    public function getUserMaxPoint()
+    {
         $max_point = PromotionUserPoint::getMaxPoint();
 
         $user = Profile::query()
@@ -369,7 +381,7 @@ class HomeController extends Controller
             ->leftJoin('el_promotion_user_point as user_point', 'user_point.user_id', '=', 'profile.user_id')
             ->where('user_point.point', '=', $max_point)
             ->where('profile.status', '=', 1)
-            ->whereNotIn('profile.user_id', function ($sub){
+            ->whereNotIn('profile.user_id', function ($sub) {
                 $sub->select(['user_id'])
                     ->from('el_training_teacher')
                     ->pluck('user_id')->toArray();
@@ -379,7 +391,8 @@ class HomeController extends Controller
     }
 
     /*Lấy giảng viên có điểm cao nhất*/
-    public function getTeacherMaxPoint(){
+    public function getTeacherMaxPoint()
+    {
         $max_point = PromotionUserPoint::getMaxPoint();
 
         $user = Profile::query()
@@ -388,7 +401,7 @@ class HomeController extends Controller
             ->leftJoin('el_promotion_user_point as user_point', 'user_point.user_id', '=', 'profile.user_id')
             ->where('user_point.point', '=', $max_point)
             ->where('profile.status', '=', 1)
-            ->whereIn('profile.user_id', function ($sub){
+            ->whereIn('profile.user_id', function ($sub) {
                 $sub->select(['user_id'])
                     ->from('el_training_teacher')
                     ->pluck('user_id')->toArray();
@@ -403,37 +416,37 @@ class HomeController extends Controller
     {
         $year = date('Y');
         for ($m = 1; $m <= 12; $m++) {
-            $onlineRegister = TrainingProcess::where('user_id',\auth()->id())
-                ->where('status',1)
-                ->where('course_type',1)
+            $onlineRegister = TrainingProcess::where('user_id', \auth()->id())
+                ->where('status', 1)
+                ->where('course_type', 1)
                 ->where(\DB::raw('month(created_at)'), '=', $m)
                 ->where(\DB::raw('year(created_at)'), '=', $year)->count();
 
-            $offlineRegister = TrainingProcess::where('user_id',\auth()->id())
-                ->where('status',1)
-                ->where('course_type',2)
+            $offlineRegister = TrainingProcess::where('user_id', \auth()->id())
+                ->where('status', 1)
+                ->where('course_type', 2)
                 ->where(\DB::raw('month(created_at)'), '=', $m)
                 ->where(\DB::raw('year(created_at)'), '=', $year)->count();
 
-            $onlineComplete = TrainingProcess::where('user_id',\auth()->id())
+            $onlineComplete = TrainingProcess::where('user_id', \auth()->id())
                 ->whereRaw('(pass = 0 or pass is null) ')
-                ->where('status',1)
-                ->where('course_type',1)
+                ->where('status', 1)
+                ->where('course_type', 1)
                 ->where(\DB::raw('month(start_date)'), '=', $m)
                 ->where(\DB::raw('year(start_date)'), '=', $year)->count();
 
-            $offlineComplete = TrainingProcess::where('user_id',\auth()->id())
+            $offlineComplete = TrainingProcess::where('user_id', \auth()->id())
                 ->where('pass', 1)
-                ->where('course_type',2)
+                ->where('course_type', 2)
                 ->where(\DB::raw('year(start_date)'), '=', $year)
                 ->where(\DB::raw('month(start_date)'), '=', $m)
                 ->count();
 
-            $totalQuiz = QuizRegister::where('user_id',\auth()->id())
+            $totalQuiz = QuizRegister::where('user_id', \auth()->id())
                 ->where(\DB::raw('month(created_at)'), '=', $m)
                 ->where(\DB::raw('year(created_at)'), '=', $year)->count();
 
-            $totalQuizComplete = QuizResult::where('user_id',\auth()->id())
+            $totalQuizComplete = QuizResult::where('user_id', \auth()->id())
                 ->where('result', 1)
                 ->where(\DB::raw('month(created_at)'), '=', $m)
                 ->where(\DB::raw('year(created_at)'), '=', $year)->count();
@@ -445,25 +458,25 @@ class HomeController extends Controller
             $quiz[] = $totalQuiz;
             $quizComplete[] = $totalQuizComplete;
         }
-        $totalOnlineRegisterYear =  TrainingProcess::where('user_id',\auth()->id())
-            ->where('course_type',1)
-            ->where('status',1)
+        $totalOnlineRegisterYear =  TrainingProcess::where('user_id', \auth()->id())
+            ->where('course_type', 1)
+            ->where('status', 1)
             ->where(\DB::raw('year(start_date)'), '=', $year)->count();
 
-        $onl_complete_year = TrainingProcess::where('user_id',\auth()->id())
-            ->where('course_type',1)
+        $onl_complete_year = TrainingProcess::where('user_id', \auth()->id())
+            ->where('course_type', 1)
             ->where('pass', 1)
             ->where(\DB::raw('year(start_date)'), '=', $year)->count();
 
         $onl_incomplete_year = $totalOnlineRegisterYear - $onl_complete_year;
 
-        $totalOfflineRegisterYear = TrainingProcess::where('user_id',\auth()->id())
-            ->where('course_type',2)
-            ->where('status',1)
+        $totalOfflineRegisterYear = TrainingProcess::where('user_id', \auth()->id())
+            ->where('course_type', 2)
+            ->where('status', 1)
             ->where(\DB::raw('year(created_at)'), '=', $year)->count();
 
-        $off_complete_year = TrainingProcess::where('user_id',\auth()->id())
-            ->where('course_type',2)
+        $off_complete_year = TrainingProcess::where('user_id', \auth()->id())
+            ->where('course_type', 2)
             ->where('pass', 1)
             ->where(\DB::raw('year(start_date)'), '=', $year)
             ->count();
@@ -476,8 +489,8 @@ class HomeController extends Controller
         $data['off_complete'] = $off_complete;
         $data['quiz'] = $quiz;
         $data['quiz_complete'] = $quizComplete;
-        $data['onl_year'] = [$onl_incomplete_year,$onl_complete_year];
-        $data['off_year'] = [$off_incomplete_year,$off_complete_year];
+        $data['onl_year'] = [$onl_incomplete_year, $onl_complete_year];
+        $data['off_year'] = [$off_incomplete_year, $off_complete_year];
         return $data;
     }
 
@@ -487,73 +500,71 @@ class HomeController extends Controller
         $unit_user = Unit::getTreeParentUnit($profile->unit_code);
 
         $search = $request->input('search');
-        $online = OnlineCourse::select(['id','code','name','image','start_date','end_date','register_deadline', \DB::raw('1 as type')])
-            ->where(function ($sub) use ($search){
-                $sub->orWhere('name', 'LIKE','%'.$search.'%')
-                    ->orWhere('code','LIKE','%'.$search.'%');
+        $online = OnlineCourse::select(['id', 'code', 'name', 'image', 'start_date', 'end_date', 'register_deadline', \DB::raw('1 as type')])
+            ->where(function ($sub) use ($search) {
+                $sub->orWhere('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('code', 'LIKE', '%' . $search . '%');
             });
 
-        if (!Permission::isAdmin()){
+        if (!Permission::isAdmin()) {
             $online->whereNull('unit_id');
-            foreach ($unit_user as $item){
-                $online->orWhere('unit_id', 'like', '%'.$item->id.'%');
+            foreach ($unit_user as $item) {
+                $online->orWhere('unit_id', 'like', '%' . $item->id . '%');
             }
         }
 
-        $offline = OfflineCourse::select(['id','code','name','image','start_date','end_date','register_deadline', \DB::raw('2 as type')])
-            ->where(function ($sub) use ($search){
-                $sub->orWhere('name', 'LIKE','%'.$search.'%')
-                    ->orWhere('code','LIKE','%'.$search.'%');
+        $offline = OfflineCourse::select(['id', 'code', 'name', 'image', 'start_date', 'end_date', 'register_deadline', \DB::raw('2 as type')])
+            ->where(function ($sub) use ($search) {
+                $sub->orWhere('name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('code', 'LIKE', '%' . $search . '%');
             });
 
-        if (!Permission::isAdmin()){
+        if (!Permission::isAdmin()) {
             $offline->whereNull('unit_id');
-            foreach ($unit_user as $item){
-                $offline->orWhere('unit_id', 'like', '%'.$item->id.'%');
+            foreach ($unit_user as $item) {
+                $offline->orWhere('unit_id', 'like', '%' . $item->id . '%');
             }
         }
 
         $result = $online->union($offline)->paginate(20);
-        return view('data.search_result',['items'=>$result]);
+        return view('data.search_result', ['items' => $result]);
     }
 
     /*khóa học theo lộ trình*/
     public function getCourseTrainingRoadmap()
     {
         $user_convert_titles = ConvertTitles::query()
-            ->where('user_id','=',\Auth::id())
-            ->where('end_date','>',date('Y-m-d H:i:s'))
+            ->where('user_id', '=', \Auth::id())
+            ->where('end_date', '>', date('Y-m-d H:i:s'))
             ->first();
 
         $user_potential = Potential::query()
-            ->where('user_id','=',\Auth::id())
-            ->where('end_date','>',date('Y-m-d H:i:s'))
+            ->where('user_id', '=', \Auth::id())
+            ->where('end_date', '>', date('Y-m-d H:i:s'))
             ->first();
 
-        if ($user_convert_titles){
+        if ($user_convert_titles) {
             $roadmap = 'el_convert_titles_roadmap';
             $title = Titles::find($user_convert_titles->title_id);
-        }
-        elseif ($user_potential){
+        } elseif ($user_potential) {
             $roadmap = 'el_potential_roadmap';
             $user = Profile::find(\Auth::id());
-            $title = Titles::where('code','=', $user->title_code)->first();
-        }
-        else{
+            $title = Titles::where('code', '=', $user->title_code)->first();
+        } else {
             $roadmap = 'el_trainingroadmap';
             $user = Profile::find(\Auth::id());
-            $title = Titles::where('code','=', $user->title_code)->first();
+            $title = Titles::where('code', '=', $user->title_code)->first();
         }
 
         $subQuery = \DB::table('el_course_register_view as a1')
-            ->join('el_course_view as a2', function ($join){
-                $join->on('a1.course_id','=','a2.course_id');
-                $join->on('a1.course_type','=','a2.course_type');
+            ->join('el_course_view as a2', function ($join) {
+                $join->on('a1.course_id', '=', 'a2.course_id');
+                $join->on('a1.course_type', '=', 'a2.course_type');
             })
-            ->where('a1.user_id','=',\Auth::id())
-            ->groupBy(['a2.subject_id','a2.course_type'])
+            ->where('a1.user_id', '=', \Auth::id())
+            ->groupBy(['a2.subject_id', 'a2.course_type'])
             ->select([
-                \DB::raw('MAX('.\DB::getTablePrefix().'a2.course_id) as course_id'),
+                \DB::raw('MAX(' . \DB::getTablePrefix() . 'a2.course_id) as course_id'),
                 'a2.subject_id',
                 'a2.course_type'
             ]);
@@ -562,34 +573,36 @@ class HomeController extends Controller
         $query->select([
             'c.*'
         ]);
+
         $query->from("$roadmap AS a");
-        if($roadmap = 'el_trainingroadmap') {
-            $query->joinSub($subQuery,'b', function ($join){
+        if ($roadmap = 'el_trainingroadmap') {
+            $query->joinSub($subQuery, 'b', function ($join) {
                 $join->on('b.subject_id', '=', 'a.subject_id');
             });
         } else {
-            $query->joinSub($subQuery,'b', function ($join){
+            $query->joinSub($subQuery, 'b', function ($join) {
                 $join->on('b.course_type', '=', 'a.training_form');
                 $join->on('b.subject_id', '=', 'a.subject_id');
             });
         }
-        $query->join('el_course_view AS c', function ($join){
+        $query->join('el_course_view AS c', function ($join) {
             $join->on('c.course_id', '=', 'b.course_id');
             $join->on('c.course_type', '=', 'b.course_type');
         });
-        $query->join('el_course_register_view as  d',function ($join){
+        $query->join('el_course_register_view as  d', function ($join) {
             $join->on('d.course_id', '=', 'c.course_id');
             $join->on('d.course_type', '=', 'c.course_type')->where('d.user_id', '=', \Auth::id());
         });
-        $query->where('c.status','=', 1);
-        $query->where('c.isopen','=', 1);
-        $query->where('a.title_id','=', @$title->id);
+        $query->where('c.status', '=', 1);
+        $query->where('c.isopen', '=', 1);
+        $query->where('a.title_id', '=', @$title->id);
 
         return $query->limit(3)->get();
     }
 
     /*Lấy 5 khóa mới nhất*/
-    public function getFiveCourseNew($limit = 5){
+    public function getFiveCourseNew($limit = 5)
+    {
         $now = date('Y-m-d H:i:s');
         $profile = Profile::find(Auth::id());
         $title = Titles::where('code', '=', $profile->title_code)->first();
@@ -608,11 +621,11 @@ class HomeController extends Controller
             ])
             ->where('status', '=', 1)
             ->where('isopen', '=', 1)
-            ->where(function ($sub) use ($now){
+            ->where(function ($sub) use ($now) {
                 $sub->where('end_date', '>=', $now);
                 $sub->orWhereNull('end_date');
             })
-            ->whereIn('id', function ($sub) use ($title, $unit){
+            ->whereIn('id', function ($sub) use ($title, $unit) {
                 $sub->select(['course_id'])
                     ->from('el_online_object')
                     ->orWhere('unit_id', '=', @$unit->id)
@@ -634,11 +647,11 @@ class HomeController extends Controller
             ])
             ->where('status', '=', 1)
             ->where('isopen', '=', 1)
-            ->where(function ($sub) use ($now){
+            ->where(function ($sub) use ($now) {
                 $sub->where('end_date', '>=', $now);
                 $sub->orWhereNull('end_date');
             })
-            ->whereIn('id', function ($sub) use ($title, $unit){
+            ->whereIn('id', function ($sub) use ($title, $unit) {
                 $sub->select(['course_id'])
                     ->from('el_offline_object')
                     ->orWhere('unit_id', '=', @$unit->id)
@@ -656,12 +669,13 @@ class HomeController extends Controller
         return $query->get();
     }
 
-    public function chartCourseByUser(){
-        $online_complete = OnlineResult::whereUserId(Auth::id())->where('result','=', 1)->count();
-        $online_uncomplete = OnlineResult::whereUserId(Auth::id())->where('result','=', 0)->count();
+    public function chartCourseByUser()
+    {
+        $online_complete = OnlineResult::whereUserId(Auth::id())->where('result', '=', 1)->count();
+        $online_uncomplete = OnlineResult::whereUserId(Auth::id())->where('result', '=', 0)->count();
         $online_not_learned = OnlineRegister::whereStatus(1)
             ->where('user_id', '=', Auth::id())
-            ->whereNotIn('id', function ($sub){
+            ->whereNotIn('id', function ($sub) {
                 $sub->select(['register_id'])
                     ->from('el_online_result')
                     ->pluck('register_id')
@@ -669,11 +683,11 @@ class HomeController extends Controller
             })
             ->count();
 
-        $offline_complete = OfflineResult::whereUserId(Auth::id())->where('result','=', 1)->count();
-        $offline_uncomplete = OfflineResult::whereUserId(Auth::id())->where('result','=', 0)->count();
+        $offline_complete = OfflineResult::whereUserId(Auth::id())->where('result', '=', 1)->count();
+        $offline_uncomplete = OfflineResult::whereUserId(Auth::id())->where('result', '=', 0)->count();
         $offline_not_learned = OfflineRegister::whereStatus(1)
             ->where('user_id', '=', Auth::id())
-            ->whereNotIn('id', function ($sub){
+            ->whereNotIn('id', function ($sub) {
                 $sub->select(['register_id'])
                     ->from('el_offline_result')
                     ->pluck('register_id')
@@ -693,10 +707,10 @@ class HomeController extends Controller
     public function getDataRoadmap()
     {
         $user_id = Auth::id();
-        $user = \DB::table('el_profile_view')->where(['user_id'=>$user_id])->first();
+        $user = \DB::table('el_profile_view')->where(['user_id' => $user_id])->first();
         $subQuery = \DB::table('el_training_process')
-            ->where('user_id','=', $user_id)
-            ->where('titles_code','=', $user->title_code)
+            ->where('user_id', '=', $user_id)
+            ->where('titles_code', '=', $user->title_code)
             ->groupBy('subject_id')
             ->select([
                 \DB::raw('MAX(id) as id'),
@@ -710,32 +724,33 @@ class HomeController extends Controller
             'c.pass',
         ]);
         $query->from("el_trainingroadmap AS a");
-        $query->joinSub($subQuery,'b', function ($join){
+        $query->joinSub($subQuery, 'b', function ($join) {
             $join->on('b.subject_id', '=', 'a.subject_id');
         });
-        $query->leftJoin('el_training_process as c', function ($join){
+        $query->leftJoin('el_training_process as c', function ($join) {
             $join->on('c.id', '=', 'b.id');
         });
-        $query->where('a.title_id','=', $user->title_id);
+        $query->where('a.title_id', '=', $user->title_id);
         $count = $query->count();
         $rows = $query->get();
 
         foreach ($rows as $row) {
-            if ($row->pass == 1){
+            if ($row->pass == 1) {
                 $row->status = trans('backend.finish');
-            }else{
+            } else {
                 $row->status = trans('backend.incomplete');
             }
         }
         json_result(['total' => $count, 'rows' => $rows]);
     }
 
-    public function chartSubjectByUser(){
+    public function chartSubjectByUser()
+    {
         $user_id = Auth::id();
-        $user = \DB::table('el_profile_view')->where(['user_id'=>$user_id])->first();
+        $user = \DB::table('el_profile_view')->where(['user_id' => $user_id])->first();
         $subQuery = \DB::table('el_training_process')
-            ->where('user_id','=', $user_id)
-            ->where('titles_code','=', $user->title_code)
+            ->where('user_id', '=', $user_id)
+            ->where('titles_code', '=', $user->title_code)
             ->groupBy('subject_id')
             ->select([
                 \DB::raw('MAX(id) as id'),
@@ -747,21 +762,21 @@ class HomeController extends Controller
             'c.pass',
         ]);
         $query->from("el_trainingroadmap AS a");
-        $query->joinSub($subQuery,'b', function ($join){
+        $query->joinSub($subQuery, 'b', function ($join) {
             $join->on('b.subject_id', '=', 'a.subject_id');
         });
-        $query->leftJoin('el_training_process as c', function ($join){
+        $query->leftJoin('el_training_process as c', function ($join) {
             $join->on('c.id', '=', 'b.id');
         });
-        $query->where('a.title_id','=', $user->title_id);
+        $query->where('a.title_id', '=', $user->title_id);
         $rows = $query->get();
 
         $uncomplete = 0;
         $complete = 0;
         foreach ($rows as $row) {
-            if ($row->pass == 1){
+            if ($row->pass == 1) {
                 $complete += 1;
-            }else{
+            } else {
                 $uncomplete += 1;
             }
         }
@@ -770,20 +785,21 @@ class HomeController extends Controller
         return $data;
     }
 
-    public function getLevelSubjectByUser(){
+    public function getLevelSubjectByUser()
+    {
         $dbprefix = \DB::getTablePrefix();
         $user_id = Auth::id();
-        $user = \DB::table('el_profile_view')->where(['user_id'=>$user_id])->first();
+        $user = \DB::table('el_profile_view')->where(['user_id' => $user_id])->first();
         $subQuery = TrainingProcess::query()
             ->select(['subject_id'])
             //->where('user_id','=', $user_id)
-            ->where('titles_code','=', $user->title_code)
+            ->where('titles_code', '=', $user->title_code)
             ->groupBy('subject_id')
             ->pluck('subject_id')->toArray();
 
         $level_subject = LevelSubject::query()
             ->select([
-                \DB::raw('MAX('.$dbprefix.'a.id) as id'),
+                \DB::raw('MAX(' . $dbprefix . 'a.id) as id'),
                 'a.name'
             ])
             ->from('el_level_subject as a')
@@ -797,12 +813,14 @@ class HomeController extends Controller
         return $level_subject;
     }
 
-    public function closeOpendMenuBottom(Request $request) {
+    public function closeOpendMenuBottom(Request $request)
+    {
         session(['close_open_menu' => $request->status]);
         session()->save();
     }
 
-    public function closeOpendMenu(Request $request){
+    public function closeOpendMenu(Request $request)
+    {
         session(['close_open_menu_frontend' => $request->status]);
         session()->save();
     }

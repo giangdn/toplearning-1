@@ -2,6 +2,7 @@
 
 namespace Modules\Quiz\Entities;
 
+use App\CacheModel;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -34,7 +35,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Modules\Quiz\Entities\QuizResult whereUserId($value)
  * @mixin \Eloquent
  */
-class QuizResult extends Model
+class QuizResult extends CacheModel
 {
     protected $table = 'el_quiz_result';
     protected $fillable = [

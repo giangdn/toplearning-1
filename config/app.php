@@ -269,5 +269,7 @@ return [
 
 
     'timeout' => 3600,
-    'enable_logging' => true
+    'enable_logging' => true,
+
+    'enable_subtance_caching' => env('CACHE_SUBSTANCE_ENABLE', true)
 ];

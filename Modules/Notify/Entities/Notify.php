@@ -2,10 +2,11 @@
 
 namespace Modules\Notify\Entities;
 
-use Illuminate\Database\Eloquent\Model;
+use App\CacheModel;
+// use Illuminate\Database\Eloquent\Model;
 use Modules\AppNotification\Helpers\AppNotification;
 
-class Notify extends Model
+class Notify extends CacheModel
 {
     protected $table = 'el_notify';
     protected $primaryKey = 'id';
@@ -21,7 +22,8 @@ class Notify extends Model
 
     public $users;
 
-    public function addMultiNotify() {
+    public function addMultiNotify()
+    {
         if (empty($this->users) || empty($this->subject) || empty($this->content)) {
             return false;
         }
@@ -51,10 +53,8 @@ class Notify extends Model
             $notification->save();
 
             return true;
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             return false;
         }
-
     }
 }

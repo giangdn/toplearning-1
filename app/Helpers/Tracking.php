@@ -7,17 +7,24 @@ use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Illuminate\Support\Facades\Cache;
+use \Exception as Exception;
 
 class Tracking
 {
-    static public function put($item, $scope = 'db')
+    static public function put($item, $scope = 'db', $backtrace = false, $stopWatch = true)
     {
         // stop-watch binding
-        self::stopWatch($item);
+        $stopWatch && self::stopWatch($item);
 
+        // item binding
         $items = self::all($scope);
         $items[] = $item;
+
+        // re-save the new collection
         Cache::put(self::key($scope), $items);
+
+        // backtrace binding
+        $backtrace && self::backtrace($item);
     }
 
     public static function dump($scope = 'db', $clean = false)
@@ -33,9 +40,9 @@ class Tracking
             foreach ($items as $item) {
                 self::log($item, $scope);
                 $numItem++;
-                $totalTime += $item->time;
+                isset($item->time) && $totalTime += floatval($item->time);
             }
-            self::mark("# items: $numItem | ∑ time: " . number_format($totalTime, 2), $scope);
+            self::mark($numItem, $totalTime, $scope);
             $clean && self::clean($scope);
         }
     }
@@ -58,25 +65,24 @@ class Tracking
             $totalTime = 0;
             foreach ($items as $item) {
                 if (
-                    isset($item->time)
-                    && $item->time > $longerThan
+                    isset($item->time) && $item->time > $longerThan
                 ) {
                     self::log($item, $scope);
                     $numItem++;
-                    $totalTime += $item->time;
+                    isset($item->time) && $totalTime += floatval($item->time);
                 }
             }
 
-            self::mark("# slow items: $numItem | ∑ time: " . number_format($totalTime, 2), $scope);
+            self::mark($numItem, $totalTime, $scope, 'slow items');
             $clean && self::clean($scope);
         }
     }
 
-    private static function mark($message, $scope)
+    private static function mark($numItem, $totalTime, $scope, $label = 'items')
     {
-        self::log('###################################', $scope);
-        self::log($message, $scope);
-        self::log('###################################', $scope);
+        self::bar($scope);
+        self::log("# $label $numItem ● ∑ time " . number_format($totalTime, 2) . ' ● @ ' . self::url(), $scope);
+        self::bar($scope);
     }
 
     private static function all($scope)
@@ -87,7 +93,6 @@ class Tracking
     private static function clean($scope = 'db')
     {
         try {
-            Log::error('cleannnnnnnnn');
             Cache::put(self::key($scope), []);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -117,12 +122,53 @@ class Tracking
         }
     }
 
+    private static function backtrace($item)
+    {
+
+        $e = new Exception();
+        $walkers = array_reverse(explode("\n", $e->getTraceAsString()));
+        if (
+            is_array($walkers)
+            && count($walkers) > 0
+        ) {
+            array_shift($walkers);
+            $appWalkers = [];
+            foreach ($walkers as $step) {
+                $step = str_replace(base_path(), '', $step);
+                // prevent some exceptions resources
+                !preg_match('/(' . implode(')|(', self::$exs) . ')/', $step) && $appWalkers[] = $step;
+            }
+            if (count($appWalkers) > 0) {
+                // dont need the time property
+                if (property_exists($item, 'time')) unset($item->time);
+
+                $item->callstack = print_r($appWalkers, true);
+                self::put($item, 'backtrace', false, false);
+            }
+        }
+    }
+
+    private static function url()
+    {
+        return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    }
+
     private static function mem(&$item)
     {
         if (!isset($item->memory)) {
             $item->memory = memory_get_peak_usage() - (self::$mem === 0 ? memory_get_peak_usage() : self::$mem);
             self::$mem = memory_get_peak_usage();
         }
+    }
+
+    private static function bar($scope, $long = 60)
+    {
+        // singleton the bar
+        if (self::$bar === '') {
+            for ($i = 0; $i < $long; $i++) self::$bar .= '#';
+        }
+
+        self::log(self::$bar, $scope);
     }
 
     private static function key($scope)
@@ -137,4 +183,11 @@ class Tracking
     private static $keys = [];
     private static $stopWatch = 0;
     private static $mem = 0;
+    private static $bar = '';
+    private static $exs = [
+        '\/vendor\/',
+        'public\/index\.php',
+        'Helpers\/Tracking\.php',
+        'Tracking::put'
+    ];
 }

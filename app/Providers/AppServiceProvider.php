@@ -304,7 +304,7 @@ class AppServiceProvider extends ServiceProvider
                 }
             }
 
-            Tracking::put((object)['sql' => $rawQuery, 'time' => $query->time]);
+            Tracking::put((object)['sql' => $rawQuery, 'time' => $query->time], 'db', true);
         });
     }
 }

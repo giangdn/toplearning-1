@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\BaseModel
  *
@@ -12,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel query()
  * @mixin \Eloquent
  */
-class BaseModel extends Model
+class BaseModel extends CacheModel
 {
     protected static function boot()
     {

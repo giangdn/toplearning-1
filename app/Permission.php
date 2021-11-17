@@ -51,13 +51,15 @@ class Permission extends Model
         'parent',
         'extend',
     ];
-    public static function getAttributeName() {
+    public static function getAttributeName()
+    {
         return [
             'name' => 'Mã',
             'description' => 'Tên',
         ];
     }
-    public static function hasPermission($code = null) {
+    public static function hasPermission($code = null)
+    {
 
         if (empty($code)) {
             if (self::isAdmin()) {
@@ -76,7 +78,8 @@ class Permission extends Model
         return (self::hasPermissionUser($code) || self::hasPermissionGroup($code));
     }
 
-    public static function hasPermissionUser($code = null) {
+    public static function hasPermissionUser($code = null)
+    {
         if (self::isAdmin()) {
             return true;
         }
@@ -105,7 +108,8 @@ class Permission extends Model
         return $query->exists();
     }
 
-    public static function hasPermissionGroup($code = null) {
+    public static function hasPermissionGroup($code = null)
+    {
         if (self::isAdmin()) {
             return true;
         }
@@ -131,24 +135,28 @@ class Permission extends Model
         return $query->exists();
     }
 
-    public static function checkPermissionCode($code) {
+    public static function checkPermissionCode($code)
+    {
         $query = self::query();
         $query->from('el_permission');
         $query->where('code', '=', $code);
         return $query->exists();
     }
 
-    public static function isAdmin() {
-        if (in_array(@Auth::user()->username,['admin','superadmin']))
+    public static function isAdmin()
+    {
+        if (in_array(@Auth::user()->username, ['admin', 'superadmin']))
             return true;
         return Auth::user() ? Auth::user()->roles()->where('name', 'Admin')->count() : false;
     }
-    public static function isSuperAdmin() {
+    public static function isSuperAdmin()
+    {
         if (Auth::user()->username == 'superadmin')
             return true;
         return false;
     }
-    public static function hasPermissionUnit($code = null) {
+    public static function hasPermissionUnit($code = null)
+    {
         if (!Auth::check()) {
             return false;
         }
@@ -162,38 +170,45 @@ class Permission extends Model
         return ($exists1 || self::hasPermissionGroup($code) || self::hasPermissionUser($code));
     }
 
-    public static function showMenuManager() {
+    public static function showMenuManager()
+    {
         return true;
     }
 
-    public static function showMenuTraining() {
+    public static function showMenuTraining()
+    {
         return true;
     }
 
-    public static function showMenuSetting() {
+    public static function showMenuSetting()
+    {
         return true;
     }
 
-    public static function showMenuNews() {
+    public static function showMenuNews()
+    {
         return true;
     }
 
-    public static function showMenuLibraries() {
+    public static function showMenuLibraries()
+    {
         return true;
     }
 
-    public static function showMenuQuiz() {
+    public static function showMenuQuiz()
+    {
         return true;
     }
 
-    public static function getChildPermission($code, $prefix='', &$result = []) {
+    public static function getChildPermission($code, $prefix = '', &$result = [])
+    {
         $rows = Permission::where('parent_code', $code)->get();
         $parent_id = Permission::where('code', $code)->first(['id'])->id;
         foreach ($rows as $row) {
             $result[] = (object) [
                 'id' => $row->id,
                 'code' => $row->code,
-                'name' => $prefix .' '. $row->name,
+                'name' => $prefix . ' ' . $row->name,
                 'parent_id' => $parent_id
             ];
 
@@ -203,7 +218,8 @@ class Permission extends Model
         return $result;
     }
 
-    public static function getArrayCodeChild($code, &$result = []) {
+    public static function getArrayCodeChild($code, &$result = [])
+    {
         $rows = Permission::where('parent_code', $code)->get();
         foreach ($rows as $row) {
             $result[] = $row->code;
@@ -212,24 +228,28 @@ class Permission extends Model
         return $result;
     }
 
-    public static function getIdUnitManagerByUser($parent_code, $user_id = null) {
+    public static function getIdUnitManagerByUser($parent_code, $user_id = null)
+    {
         $user_id = empty($user_id) ? Auth::id() : $user_id;
         $ids1 = UnitManager::getIdUnitManagedByUser($user_id);
         $ids2 = UnitManager::getIdUnitPermissionByUser($parent_code, $user_id);
         return array_merge($ids1, $ids2);
     }
 
-    public static function isTeacher($user_id = null) {
+    public static function isTeacher($user_id = null)
+    {
         $user_id = empty($user_id) ? Auth::id() : $user_id;
         if (TrainingTeacher::where('user_id', '=', $user_id)
-                ->where('status', '=', 1)->exists()) {
+            ->where('status', '=', 1)->exists()
+        ) {
             return true;
         }
 
         return false;
     }
 
-    public static function isUnitManager($user_id = null, $manager_type = null) {
+    public static function isUnitManager($user_id = null, $manager_type = null)
+    {
         $user_id = empty($user_id) ? Auth::id() : $user_id;
         $profile = \DB::table('el_profile')->where('user_id', '=', $user_id)->first();
         if (empty($profile)) {
@@ -237,14 +257,15 @@ class Permission extends Model
         }
 
         $unit_manger = \DB::table('el_unit_manager')->where('user_code', '=', $profile->code);
-        if ($manager_type){
+        if ($manager_type) {
             $unit_manger = $unit_manger->where('manager_type', '=', $manager_type);
         }
 
         return $unit_manger->exists();
     }
 
-    public static function isUnitPermistion($user_id = null) {
+    public static function isUnitPermistion($user_id = null)
+    {
         $user_id = empty($user_id) ? Auth::id() : $user_id;
         return UnitPermission::where('user_id', '=', $user_id)
             ->exists();
@@ -255,7 +276,8 @@ class Permission extends Model
      * Tham số: mã quyền, id đơn vị (nếu có)
      * Trả về: mảng user có quyền truyền vào
      * */
-    public static function getUserPermission($permission_code, $unit_id = 0) {
+    public static function getUserPermission($permission_code, $unit_id = 0)
+    {
         $query = PermissionUser::query();
         $query->where('permission_code', '=', $permission_code)
             ->where('unit_id', '=', $unit_id);
@@ -264,6 +286,6 @@ class Permission extends Model
 
     public static function permissionExtend($model)
     {
-        return Permission::where(['model'=>$model])->whereNotNull('extend')->value('extend');
+        return Permission::where(['model' => $model])->whereNotNull('extend')->value('extend');
     }
 }

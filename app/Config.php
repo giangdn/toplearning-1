@@ -2,9 +2,6 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use mysql_xdevapi\Collection;
-
 /**
  * App\Config
  *
@@ -19,7 +16,7 @@ use mysql_xdevapi\Collection;
  * @method static \Illuminate\Database\Eloquent\Builder|Config whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Config whereValue($value)
  */
-class Config extends Model
+class Config extends CacheModel
 {
     public $timestamps = false;
     protected $table = 'el_config';
@@ -33,7 +30,8 @@ class Config extends Model
      * Get all config name.
      * @return array
      * */
-    public static function configNames() {
+    public static function configNames()
+    {
         return [
             'ldap_host',
             'ldap_dn',
@@ -58,7 +56,8 @@ class Config extends Model
      * @param $default
      * @return string
      * */
-    public static function getConfig($name, $default = null) {
+    public static function getConfig($name, $default = null)
+    {
         if ($config = Config::whereName($name)->first(['value'])) {
             return $config->value;
         }
@@ -72,37 +71,42 @@ class Config extends Model
      * @param string $value
      * @return string
      * */
-    public static function setConfig($name, $value) {
+    public static function setConfig($name, $value)
+    {
         return Config::whereName($name)
             ->updateOrCreate([
                 'name' => $name
-            ],[
+            ], [
                 'value' => $value
             ]);
     }
 
-    public static function getAttributeName() {
+    public static function getAttributeName()
+    {
         return [
             'name' => 'Tên',
             'value' => 'Giá trị',
         ];
     }
 
-    public static function getLogo($name = 'logo') {
+    public static function getLogo($name = 'logo')
+    {
         return Config::getConfig($name);
     }
 
-    public static function getLogoOutside($name = 'logo_outside') {
+    public static function getLogoOutside($name = 'logo_outside')
+    {
         return Config::getConfig($name);
     }
 
-    public static function getFavicon() {
+    public static function getFavicon()
+    {
         return Config::getConfig('favicon');
     }
 
     public static function getConfigEmail()
     {
-        $data =  Config::where('name','like','email%')->get();
-        return $data->isNotEmpty()? $data->pluck('value','name'):null;
+        $data =  Config::where('name', 'like', 'email%')->get();
+        return $data->isNotEmpty() ? $data->pluck('value', 'name') : null;
     }
 }

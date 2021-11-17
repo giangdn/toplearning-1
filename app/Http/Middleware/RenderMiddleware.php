@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Helpers\Tracking;
-use Illuminate\Support\Facades\Log;
 
 class RenderMiddleware
 {
@@ -12,11 +11,12 @@ class RenderMiddleware
     {
         $response = $next($request);
         if (config('app.debug', false)) {
-            $scopes = ['db', 'app', 'lay', 'event'];
+            $dumpScopes = ['db', 'app', 'lay', 'event', 'backtrace'];
+            $dumpSlowScopes = ['db', 'app', 'lay', 'event'];
 
-            foreach ($scopes as $scope) {
-                Tracking::dump($scope);
-                Tracking::dumpSlow($scope);
+            foreach ($dumpScopes as $scope) {
+                Tracking::dump($scope, !in_array($scope, $dumpSlowScopes));
+                in_array($scope, $dumpSlowScopes) && Tracking::dumpSlow($scope);
             }
         }
 

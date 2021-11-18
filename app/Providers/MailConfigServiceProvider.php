@@ -14,7 +14,6 @@ class MailConfigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
     }
 
     /**
@@ -24,12 +23,8 @@ class MailConfigServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (!\Schema::hasTable('el_config'))
-        {
-            return;
-        }
         $mail = @\App\Config::getConfigEmail();
-        
+
         if ($mail) //checking if table is not empty
         {
             $config = [
@@ -44,7 +39,7 @@ class MailConfigServiceProvider extends ServiceProvider
                 'username'   => $mail['email_user'],
                 'password'   => $mail['email_password'],
             ];
-            
+
             Config::set('mail', $config);
         }
     }

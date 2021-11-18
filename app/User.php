@@ -7,7 +7,6 @@ use App\Traits\ChangeLogs;
 use Carbon\Carbon;
 use HighIdeas\UsersOnline\Traits\UsersOnlineTrait;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -143,13 +142,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  */
-class User extends Authenticatable
+class User extends UserCache
 {
     use Notifiable, HasRoles, ChangeLogs, UsersOnlineTrait;
 
     protected $table = 'user';
     protected $fillable = [
-        'username', 'email', 'confirmed', 'mnethostid','last_online', 'code'
+        'username', 'email', 'confirmed', 'mnethostid', 'last_online', 'code'
     ];
     protected $hidden = [
         'password',
@@ -157,31 +156,34 @@ class User extends Authenticatable
 
     public $timestamps = false;
 
-    public function notifications() {
+    public function notifications()
+    {
         return $this->morphMany(Notifications::class, 'notifiable')->orderBy('created_at', 'desc');
     }
 
     public function profile()
     {
-        return $this->hasOne('App\Profile','user_id');
+        return $this->hasOne('App\Profile', 'user_id');
     }
 
-    public function surveys() {
-        return $this->belongsToMany('Modules\Survey\Entities\Survey','el_survey_user','user_id','survey_user');
+    public function surveys()
+    {
+        return $this->belongsToMany('Modules\Survey\Entities\Survey', 'el_survey_user', 'user_id', 'survey_user');
     }
 
-    public function teacher() {
+    public function teacher()
+    {
         return $this->hasOne('App\Models\Categories\TrainingTeacher', 'user_id', 'id');
     }
 
-    public function updateAnalytics() {
+    public function updateAnalytics()
+    {
         if ($this->id) {
             $analytics = Analytics::where('user_id', '=', $this->id)->where('day', '=', date('Y-m-d'))->orderBy('id', 'desc')->first();
 
             if ($analytics) {
                 Analytics::where('id', '=', $analytics->id)->update(['end_date' => date('Y-m-d H:i:s')]);
-            }
-            else {
+            } else {
                 $analytic = new Analytics();
                 $analytic->user_id = $this->id;
                 $analytic->ip_address = request()->ip();
@@ -193,9 +195,10 @@ class User extends Authenticatable
         }
     }
 
-    public function isAdmin() {
+    public function isAdmin()
+    {
 
-        if (in_array(Auth::user()->username,['admin','superadmin']))
+        if (in_array(Auth::user()->username, ['admin', 'superadmin']))
             return true;
         return Auth::user()->roles()->where('name', 'Admin')->count();
     }
@@ -204,7 +207,8 @@ class User extends Authenticatable
     {
         return Auth::user()->roles()->count();
     }
-    public function isTeacher() {
+    public function isTeacher()
+    {
         if ($this->isAdmin()) {
             return true;
         }
@@ -218,7 +222,8 @@ class User extends Authenticatable
      * @param bool $remember
      * @return bool
      * */
-    public function login($password, $remember = false) {
+    public function login($password, $remember = false)
+    {
         if ($this->auth == 'ldap') {
             $ldap = new LdapLogin();
             if ($ldap->login($this->username, $password)) {
@@ -258,60 +263,71 @@ class User extends Authenticatable
      * */
     public static function countUsersOnline()
     {
-        $seconds_since_last_activity = \Config::get('session.lifetime')*60;
+        $seconds_since_last_activity = \Config::get('session.lifetime') * 60;
         $last_activity = Carbon::now()->subSeconds($seconds_since_last_activity);
         $online_users = User::where('last_online', '>=', $last_activity)->count();
         return $online_users;
     }
-    public static function canPermissionReport() {
+    public static function canPermissionReport()
+    {
         $user = Auth::user();
-        return Auth::user()->roles()->where('name', 'Admin')->count() || \DB::table('el_model_has_permissions as a')->join('el_permissions as b','a.permission_id','=','b.id')
-            ->where(['a.model_id'=>$user->id])->where('b.name','like','%report%')->exists() || (Auth::id() == 2);
+        return Auth::user()->roles()->where('name', 'Admin')->count() || \DB::table('el_model_has_permissions as a')->join('el_permissions as b', 'a.permission_id', '=', 'b.id')
+            ->where(['a.model_id' => $user->id])->where('b.name', 'like', '%report%')->exists() || (Auth::id() == 2);
     }
-    public static function canPermissionCategoryUnit() {
+    public static function canPermissionCategoryUnit()
+    {
         $user = Auth::user();
         return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('category-unit') || $user->can('category-unit-type') || $user->can('category-titles') || $user->can('category-cert');
     }
-    public static function canPermissionCategoryCourse() {
+    public static function canPermissionCategoryCourse()
+    {
         $user = Auth::user();
         return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('category-training-program') || $user->can('category-level-subject')
             || $user->can('category-subject') || $user->can('category-training-location') || $user->can('category-training-form');
     }
-    public static function canPermissionCategoryQuiz() {
+    public static function canPermissionCategoryQuiz()
+    {
         $user = Auth::user();
-        return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('category-quiz-type') ;
+        return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('category-quiz-type');
     }
-    public static function canPermissionCategoryCost() {
+    public static function canPermissionCategoryCost()
+    {
         $user = Auth::user();
         return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('category-training-cost') || $user->can('category-student-cost') || $user->can('commit-month');
     }
-    public static function canPermissionCategoryTeacher() {
+    public static function canPermissionCategoryTeacher()
+    {
         $user = Auth::user();
         return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('category-teacher') || $user->can('category-teacher-type') || $user->can('category-partner');
     }
-    public static function canPermissionCategoryProvince() {
+    public static function canPermissionCategoryProvince()
+    {
         $user = Auth::user();
         return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('category-province') || $user->can('category-district');
     }
     // quyền tin tức chung
-    public static function canPermissionNewsGeneral() {
+    public static function canPermissionNewsGeneral()
+    {
         $user = Auth::user();
         return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('news-outside-category') || $user->can('news-outside-list');
     }
     // quản lý đào tạo
-    public static function canPermissionTrainingManager() {
+    public static function canPermissionTrainingManager()
+    {
         $user = Auth::user();
         return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('training-roadmap') || $user->can('training-by-title') || $user->can('training-by-title-result') || $user->can('subjectregister')
             || $user->can('indemnify') || $user->can('mergesubject') || $user->can('splitsubject') || $user->can('subjectcomplete') || $user->can('movetrainingprocess') || $user->can('certificate-template');
     }
     // Tổ chức đào tạo
-    public static function canPermissionTrainingOrganization() {
+    public static function canPermissionTrainingOrganization()
+    {
         $user = Auth::user();
         return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('online-course') || $user->can('offline-course') || $user->can('training-plan') || $user->can('course-plan')
             || $user->can('course-old');
     }
     // Quiz
-    public static function canPermissionQuiz() {
+    public static function canPermissionQuiz()
+    {
         $user = Auth::user();
         return Auth::user()->roles()->where('name', 'Admin')->count() || $user->can('quiz-category-question') || $user->can('quiz') || $user->can('quiz-grading') || $user->can('quiz-template')
             || $user->can('quiz-dashboard') || $user->can('quiz-setting-alert') || $user->can('quiz-user-secondary') || $user->can('quiz-history') || $user->can('quiz-history-user-second') || $user->isTeacher();

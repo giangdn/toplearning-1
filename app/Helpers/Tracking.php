@@ -134,7 +134,7 @@ class Tracking
             array_shift($walkers);
             $appWalkers = [];
             foreach ($walkers as $step) {
-                $step = str_replace(base_path(), '', $step);
+                // $step = str_replace(base_path(), '', $step);
                 // prevent some exceptions resources
                 !preg_match('/(' . implode(')|(', self::$exs) . ')/', $step) && $appWalkers[] = $step;
             }

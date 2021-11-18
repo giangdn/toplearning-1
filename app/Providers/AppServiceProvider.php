@@ -194,10 +194,13 @@ class AppServiceProvider extends ServiceProvider
             $this->app['request']->server->set('HTTPS', 'on');
             \URL::forceScheme('https');
         }
-        view()->composer('*', function ($view) {
-            if (auth()->check())
-                $view->with('userUnits', User::getRoleAndManagerUnitUser());
-        });
+
+        if (auth()->check()) {
+            $Roles = User::getRoleAndManagerUnitUser();
+            view()->composer('*', function ($view) use ($Roles) {
+                $view->with('userUnits', $Roles);
+            });
+        }
 
         OfflineCourse::observe(OfflineCourseObserver::class);
         OnlineCourse::observe(OnlineCourseObserver::class);

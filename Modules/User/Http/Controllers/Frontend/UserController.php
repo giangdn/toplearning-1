@@ -76,32 +76,32 @@ class UserController extends Controller
         PromotionUserPoint::firstOrCreate(['user_id' => \Auth::id()], ['point' => 0, 'level_id' => 0]);
         $promotion = PromotionUserPoint::whereUserId(\Auth::id())->first();
         $promotion_level = '';
-        if(!empty($promotion)) {
-            $promotion_level = PromotionLevel::where('status',1)->where('level',$promotion->level_id)->first();
+        if (!empty($promotion)) {
+            $promotion_level = PromotionLevel::where('status', 1)->where('level', $promotion->level_id)->first();
         }
         $orders = PromotionOrders::whereUserId(\Auth::id())
-            ->select('el_promotion_orders.*','el_promotion.name','el_promotion.images','el_promotion_group.name as group_name')
+            ->select('el_promotion_orders.*', 'el_promotion.name', 'el_promotion.images', 'el_promotion_group.name as group_name')
             ->join('el_promotion', 'promotion_id', 'el_promotion.id')
-            ->join('el_promotion_group', 'el_promotion_group.id','promotion_group')
+            ->join('el_promotion_group', 'el_promotion_group.id', 'promotion_group')
             ->paginate(8);
-        $info_qrcode = json_encode(['user_id'=>$user->user_id,'type'=>'profile']);
+        $info_qrcode = json_encode(['user_id' => $user->user_id, 'type' => 'profile']);
         $sliders = Slider::where('status', '=', 1)
             ->where('type', '=', 1)
             ->where('location', '!=', 1)
-            ->where(function ($sub) use ($unit){
+            ->where(function ($sub) use ($unit) {
                 $sub->whereNull('object');
-                foreach ($unit as $item){
+                foreach ($unit as $item) {
                     $sub->orWhereIn('object', [$item->id]);
                 }
             })
             ->get();
-        $referer = \Request::segment(2)=='referer'?$user->referer:null;
+        $referer = \Request::segment(2) == 'referer' ? $user->referer : null;
 
         $career_roadmaps = CareerRoadmap::where('title_id', '=', @$title->id)
             ->where('primary', '=', 1)
             ->latest()->first();
 
-        $user_meta = function ($key){
+        $user_meta = function ($key) {
             return UserMeta::where('user_id', '=', \Auth::id())->where('key', '=', $key)->first(['value']);
         };
         $user_name = User::find($user->user_id)->username;
@@ -119,17 +119,17 @@ class UserController extends Controller
             ->where('title_id', '=', @$title->id)
             ->get(['id', 'name']);
 
-        if ($user->date_title_appointment){
+        if ($user->date_title_appointment) {
             $start_date = $user->date_title_appointment;
-        }elseif ($user->effective_date){
+        } elseif ($user->effective_date) {
             $start_date = $user->effective_date;
-        }else{
+        } else {
             $start_date = $user->join_company;
         }
 
-        $student_costs = StudentCost::where('status','=',1)->get();
+        $student_costs = StudentCost::where('status', '=', 1)->get();
         $agent = new Agent();
-        return view('user::frontend.index',[
+        return view('user::frontend.index', [
             'user' => $user,
             'title' => $title,
             'unit' => $unit,
@@ -137,7 +137,7 @@ class UserController extends Controller
             'level_name' => $level_name,
             'promotion' => $promotion,
             'orders' => $orders,
-            'info_qrcode'=>$info_qrcode,
+            'info_qrcode' => $info_qrcode,
             'sliders' => $sliders,
             'referer' => $referer,
             'career_roadmaps' => $career_roadmaps,
@@ -176,7 +176,7 @@ class UserController extends Controller
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 20);
         $query = PromotionUserHistory::query()
-            ->select(['a.*', 'b.code','c.name as video_name','d.name as promotion_name'])
+            ->select(['a.*', 'b.code', 'c.name as video_name', 'd.name as promotion_name'])
             ->from('el_promotion_user_point_get_history as a')
             ->leftJoin('el_promotion_course_setting as b', 'b.id', '=', 'a.promotion_course_setting_id')
             ->leftJoin('el_daily_training_video as c', 'c.id', '=', 'a.video_id')
@@ -185,7 +185,7 @@ class UserController extends Controller
             ->where('a.point', '>', '0');
 
         $count = $query->count();
-        $query->orderBy('a.'.$sort, $order);
+        $query->orderBy('a.' . $sort, $order);
         $query->offset($offset);
         $query->limit($limit);
         $rows = $query->get();
@@ -198,30 +198,38 @@ class UserController extends Controller
         ];
 
         foreach ($rows as $row) {
-            if($row->daily_training == 1) {
-                $row->content = 'Học liệu đào tạo video: '. $row->video_name;
+            if ($row->daily_training == 1) {
+                $row->content = 'Học liệu đào tạo video: ' . $row->video_name;
             } else if ($row->donate_point == 1) {
                 $row->content = 'Tặng điểm';
             } else if ($row->promotion) {
-                $row->content = 'Quà tặng quy đổi '. $row->promotion_name;
+                $row->content = 'Quà tặng quy đổi ' . $row->promotion_name;
             } else {
-                switch ($row->code){
+                switch ($row->code) {
                     case 'complete':
-                        $content = 'Hoàn thành '. $arr_object[$row->type]; break;
+                        $content = 'Hoàn thành ' . $arr_object[$row->type];
+                        break;
                     case 'landmarks':
-                        $content = 'Đạt mốc điểm trong '. $arr_object[$row->type]; break;
+                        $content = 'Đạt mốc điểm trong ' . $arr_object[$row->type];
+                        break;
                     case 'assessment_after_course':
-                        $content = 'Thực hiện đánh giá sau khóa học của '. $arr_object[$row->type]; break;
+                        $content = 'Thực hiện đánh giá sau khóa học của ' . $arr_object[$row->type];
+                        break;
                     case 'evaluate_training_effectiveness':
-                        $content = 'Đánh giá hiệu quả sau đào tạo của '. $arr_object[$row->type]; break;
+                        $content = 'Đánh giá hiệu quả sau đào tạo của ' . $arr_object[$row->type];
+                        break;
                     case 'rating_star':
-                        $content = 'Đánh giá sao '. $arr_object[$row->type]; break;
+                        $content = 'Đánh giá sao ' . $arr_object[$row->type];
+                        break;
                     case 'share_course':
-                        $content = 'Share '. $arr_object[$row->type]; break;
+                        $content = 'Share ' . $arr_object[$row->type];
+                        break;
                     case 'attendance':
-                        $content = 'Tham gia '. $arr_object[$row->type]; break;
+                        $content = 'Tham gia ' . $arr_object[$row->type];
+                        break;
                     default:
-                        $content = ''; break;
+                        $content = '';
+                        break;
                 }
                 $row->content = $content;
             }
@@ -231,29 +239,30 @@ class UserController extends Controller
         json_result(['total' => $count, 'rows' => $rows]);
     }
 
-    public function showModalReferer(Request $request) {
+    public function showModalReferer(Request $request)
+    {
         $schedule_id = $request->input('schedule_id');
         $course_id = $request->input('course_id');
-        return view('user::frontend.referer.qrcode' );
+        return view('user::frontend.referer.qrcode');
     }
 
     public function getRefererHist(Request $request)
     {
         $user_id = \Auth::id();
         $query = \DB::query();
-        $id_code = Profile::where('user_id','=',$user_id)->value('id_code');
+        $id_code = Profile::where('user_id', '=', $user_id)->value('id_code');
         $query->select([
             'a.*',
             'b.full_name as name_referer'
         ]);
         $query->from("el_referer_hist AS a");
-        $query->leftJoin('el_profile_view as b', 'a.user_id','=','b.user_id');
-        $query->where('a.referer','=', $id_code);
+        $query->leftJoin('el_profile_view as b', 'a.user_id', '=', 'b.user_id');
+        $query->where('a.referer', '=', $id_code);
 
         $count = $query->count();
         $rows = $query->get();
         foreach ($rows as $row) {
-            $row->created_at = get_date($row->created_at,'d/m/Y h:i:s ');
+            $row->created_at = get_date($row->created_at, 'd/m/Y h:i:s ');
         }
         json_result(['total' => $count, 'rows' => $rows]);
     }
@@ -262,30 +271,28 @@ class UserController extends Controller
     {
         $this->validateRequest([
             'referer' => 'nullable|min:6|max:10',
-        ],$request, Profile::getAttributeName());
-        if (!Profile::validRefer($request->referer)){
-            json_message('Mã giới thiệu không hợp lệ','error');
+        ], $request, Profile::getAttributeName());
+        if (!Profile::validRefer($request->referer)) {
+            json_message('Mã giới thiệu không hợp lệ', 'error');
         }
         $id = \Auth::id();
-        $model = Profile::firstOrCreate(['user_id'=>$id]);
-        if ($model->referer){
+        $model = Profile::firstOrCreate(['user_id' => $id]);
+        if ($model->referer) {
             json_message('Cập nhật thành công');
-        }else
+        } else
             $model->referer = $request->referer;
-        if($model->save())
-        {
+        if ($model->save()) {
             PromotionUserPoint::updatePointReferer($request->referer);
-
         }
-        json_result(['message'=>'Cập nhật thành công','status'=>'success','redirect'=>route('frontend.user.referer')]);
+        json_result(['message' => 'Cập nhật thành công', 'status' => 'success', 'redirect' => route('frontend.user.referer')]);
     }
 
     public function getDataRoadmap(Request $request)
     {
         $user_id = Auth::id();
-        $user = \DB::table('el_profile_view')->where(['user_id'=>$user_id])->first();
+        $user = \DB::table('el_profile_view')->where(['user_id' => $user_id])->first();
         $subQuery = \DB::table('el_training_process')
-            ->where('titles_code','=', $user->title_code)
+            ->where('titles_code', '=', $user->title_code)
             ->groupBy('subject_id')
             ->select([
                 \DB::raw('MAX(id) as id'),
@@ -315,20 +322,20 @@ class UserController extends Controller
             'subject.name as subject_name',
         ]);
         $query->from("el_trainingroadmap AS a");
-       /* $query->joinSub($subQuery,'b', function ($join){
+        /* $query->joinSub($subQuery,'b', function ($join){
             $join->on('b.subject_id', '=', 'a.subject_id');
         });
         $query->leftJoin('el_training_process as c', function ($join){
             $join->on('c.id', '=', 'b.id');
         });*/
         $query->leftJoin('el_subject as subject', 'subject.id', '=', 'a.subject_id');
-        $query->leftJoin('el_training_program as d','d.id','=','a.training_program_id');
-        $query->where('a.title_id','=', $user->title_id);
+        $query->leftJoin('el_training_program as d', 'd.id', '=', 'a.training_program_id');
+        $query->where('a.title_id', '=', $user->title_id);
         $count = $query->count();
         $rows = $query->get();
         foreach ($rows as $row) {
             $training_process = TrainingProcess::whereSubjectId($row->subject_id)
-                ->where('titles_code','=', $user->title_code)
+                ->where('titles_code', '=', $user->title_code)
                 ->where('user_id', '=', $user_id)
                 ->where('pass', 1)
                 ->orderByDesc('updated_at')
@@ -337,47 +344,46 @@ class UserController extends Controller
             $hasCourse = $this->checkCourseSubject($row->subject_id);
             $row->start_date = $training_process ? get_date($training_process->start_date) : '';
             $row->end_date = $training_process ? get_date($training_process->end_date) : '';
-            $row->score = ($training_process && $training_process->mark) ? number_format($training_process->mark,2,',','.') : '';
-            if ($row->training_program_code){
-                $btn = $hasCourse?'<button class="btn btn-primary load-modal" data-url="'.route('module.frontend.user.show_modal_roadmap',[$row->subject_id] ).'">Đăng ký</button>':'<button data-subject_id="'.$row->subject_id.'" class="btn btn-primary btnRegisterSubject">Đăng ký</button>';
+            $row->score = ($training_process && $training_process->mark) ? number_format($training_process->mark, 2, ',', '.') : '';
+            if ($row->training_program_code) {
+                $btn = $hasCourse ? '<button class="btn btn-primary load-modal" data-url="' . route('module.frontend.user.show_modal_roadmap', [$row->subject_id]) . '">Đăng ký</button>' : '<button data-subject_id="' . $row->subject_id . '" class="btn btn-primary btnRegisterSubject">Đăng ký</button>';
 
-                $row->result = ($training_process && $training_process->pass==1)? trans('backend.finish') : trans('backend.incomplete').'<br/>'.$btn;
+                $row->result = ($training_process && $training_process->pass == 1) ? trans('backend.finish') : trans('backend.incomplete') . '<br/>' . $btn;
             }
 
-            if ($row->completion_time && $training_process && $training_process->time_complete){
-                if ($training_process->course_type == 1){
+            if ($row->completion_time && $training_process && $training_process->time_complete) {
+                if ($training_process->course_type == 1) {
                     $row->start_effect = get_date($training_process->time_complete);
                     $end = strtotime(date("Y-m-d", strtotime($training_process->time_complete)) . " +{$row->completion_time} day");
                     $row->end_effect = strftime("%d/%m/%Y", $end);
-                }else{
+                } else {
                     $row->start_effect = get_date($training_process->end_date);
                     $end = strtotime(date("Y-m-d", strtotime($training_process->end_date)) . " +{$row->completion_time} day");
                     $row->end_effect = strftime("%d/%m/%Y", $end);
                 }
-            }else{
+            } else {
                 $row->start_effect = '-';
                 $row->end_effect = '-';
             }
 
-            $row->status = $training_process && $training_process->pass==1? trans('backend.finish') :trans('backend.incomplete');
+            $row->status = $training_process && $training_process->pass == 1 ? trans('backend.finish') : trans('backend.incomplete');
             $row->note = $training_process ? $training_process->note : '';
-            if ($training_process){
-                if ($training_process->process_type==2)
+            if ($training_process) {
+                if ($training_process->process_type == 2)
                     $row->process_type = trans('backend.subject_complete');
-                elseif ($training_process->process_type==4)
+                elseif ($training_process->process_type == 4)
                     $row->process_type = trans('backend.merge_subject');
-                elseif ($training_process->process_type==5)
+                elseif ($training_process->process_type == 5)
                     $row->process_type = trans('backend.split_subject');
                 else
                     $row->process_type = '-';
-            }
-            else
+            } else
                 $row->process_type = '-';
 
-            $training_form = $row->training_form? json_decode($row->training_form, true):[];
-            if( in_array(1, $training_form) && !in_array(2, $training_form) ) {
+            $training_form = $row->training_form ? json_decode($row->training_form, true) : [];
+            if (in_array(1, $training_form) && !in_array(2, $training_form)) {
                 $row->training_form = 'Online';
-            } else if ( !in_array(1, $training_form) && in_array(2, $training_form) ) {
+            } else if (!in_array(1, $training_form) && in_array(2, $training_form)) {
                 $row->training_form = 'Tập trung';
             } else {
                 $row->training_form = 'Online, Tập trung';
@@ -388,32 +394,33 @@ class UserController extends Controller
 
     public function checkCourseSubject($subject_id)
     {
-        $courses_online = OnlineCourse::where(['subject_id'=>$subject_id,'status'=>1,'isopen'=>1])->exists();
+        $courses_online = OnlineCourse::where(['subject_id' => $subject_id, 'status' => 1, 'isopen' => 1])->exists();
         if ($courses_online)
             return true;
-        $courses_offline = OfflineCourse::where(['subject_id'=>$subject_id,'status'=>1,'isopen'=>1])->exists();
+        $courses_offline = OfflineCourse::where(['subject_id' => $subject_id, 'status' => 1, 'isopen' => 1])->exists();
         if ($courses_offline)
             return true;
         return false;
     }
-    public function getModalContent(Request $request){
+    public function getModalContent(Request $request)
+    {
         $this->validateRequest([
             'roadmap_id' => 'required',
         ], $request);
 
         $user_new_recruitment = NewRecruitment::query()
             ->where('user_id', '=', \Auth::id())
-            ->where('end_date','>',date('Y-m-d H:i:s'))
+            ->where('end_date', '>', date('Y-m-d H:i:s'))
             ->first();
 
         $user_convert_titles = ConvertTitles::query()
-            ->where('user_id','=',\Auth::id())
-            ->where('end_date','>',date('Y-m-d H:i:s'))
+            ->where('user_id', '=', \Auth::id())
+            ->where('end_date', '>', date('Y-m-d H:i:s'))
             ->first();
 
         $user_potential = Potential::query()
-            ->where('user_id','=',\Auth::id())
-            ->where('end_date','>',date('Y-m-d H:i:s'))
+            ->where('user_id', '=', \Auth::id())
+            ->where('end_date', '>', date('Y-m-d H:i:s'))
             ->first();
 
         if ($user_new_recruitment)
@@ -433,7 +440,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function getDataTrainingProcess() {
+    public function getDataTrainingProcess()
+    {
         $query = \DB::query();
         $query->select([
             'mark',
@@ -450,46 +458,46 @@ class UserController extends Controller
             'certificate',
         ]);
         $query->from('el_training_process');
-        $query->where('user_id','=',\Auth::id());
+        $query->where('user_id', '=', \Auth::id());
         $count = $query->count();
         $rows = $query->get();
         foreach ($rows as $row) {
-            if ($row->course_type==1){
+            if ($row->course_type == 1) {
                 $course = OnlineCourse::find($row->course_id);
-            }else{
+            } else {
                 $course = OfflineCourse::find($row->course_id);
             }
 
             $row->image_cert = '';
-            if (isset($course->cert_code) && $row->result == 1){
+            if (isset($course->cert_code) && $row->result == 1) {
                 $row->image_cert = route('module.frontend.user.trainingprocess.certificate', ['course_id' => $row->course_id, 'course_type' => $row->course_type, 'user_id' => \Auth::id()]);
             }
 
             $row->training_form = '-';
-            if($course) {
-                $training_form = TrainingForm::where('id',$course->training_form_id)->first();
+            if ($course) {
+                $training_form = TrainingForm::where('id', $course->training_form_id)->first();
                 $row->training_form = @$training_form->name;
             }
 
-            $row->course_type = $row->course_type==1?trans('backend.onlines'):trans('backend.offline');
+            $row->course_type = $row->course_type == 1 ? trans('backend.onlines') : trans('backend.offline');
             $row->start_date = get_date($row->start_date);
             $row->end_date = get_date($row->end_date);
-            $row->score = $row->mark ? number_format($row->mark,2,',','.') : '';
+            $row->score = $row->mark ? number_format($row->mark, 2, ',', '.') : '';
 
-            if ($row->process_type==2)
+            if ($row->process_type == 2)
                 $row->process_type = trans('backend.subject_complete');
-            elseif ($row->process_type==4)
+            elseif ($row->process_type == 4)
                 $row->process_type = trans('backend.merge_subject');
-            elseif ($row->process_type==5)
+            elseif ($row->process_type == 5)
                 $row->process_type = trans('backend.split_subject');
             else
                 $row->process_type = '-';
-
         }
         json_result(['total' => $count, 'rows' => $rows]);
     }
 
-    public function getDataQuizResult() {
+    public function getDataQuizResult()
+    {
         $query = \DB::query()
             ->select([
                 'a.quiz_id',
@@ -504,19 +512,19 @@ class UserController extends Controller
                 'd.reexamine'
             ])
             ->from('el_quiz_register as a')
-            ->join('el_quiz_part as b','b.id','=','a.part_id')
-            ->join('el_quiz as c','c.id','=','b.quiz_id')
-            ->leftJoin('el_quiz_result as d',function ($join){
-                $join->on('a.user_id','=','d.user_id');
-                $join->on('d.quiz_id','=','a.quiz_id');
+            ->join('el_quiz_part as b', 'b.id', '=', 'a.part_id')
+            ->join('el_quiz as c', 'c.id', '=', 'b.quiz_id')
+            ->leftJoin('el_quiz_result as d', function ($join) {
+                $join->on('a.user_id', '=', 'd.user_id');
+                $join->on('d.quiz_id', '=', 'a.quiz_id');
             })
-            ->where('a.user_id','=',\Auth::id());
+            ->where('a.user_id', '=', \Auth::id());
         $count = $query->count();
         $rows = $query->get();
         foreach ($rows as $row) {
-            $row->start_date = get_date($row->start_date,'d/m/Y H:i');
-            $row->end_date = get_date($row->end_date,'d/m/Y H:i');
-            $row->grade = number_format(($row->reexamine ? $row->reexamine : $row->grade),2,',','.');
+            $row->start_date = get_date($row->start_date, 'd/m/Y H:i');
+            $row->end_date = get_date($row->end_date, 'd/m/Y H:i');
+            $row->grade = number_format(($row->reexamine ? $row->reexamine : $row->grade), 2, ',', '.');
         }
         json_result(['total' => $count, 'rows' => $rows]);
     }
@@ -531,18 +539,17 @@ class UserController extends Controller
             'selectavatar.uploaded' => 'Dung lượng hình không được lớn hơn 10mb'
         ];
 
-        $validator = \Validator::make($posts, $rules,$message);
-        if ($validator->fails()){
+        $validator = \Validator::make($posts, $rules, $message);
+        if ($validator->fails()) {
             return redirect()->back();
         }
 
         $avatar = $request->file('selectavatar');
         $storage = \Storage::disk(config('app.datafile.upload_disk'));
         $extension = $avatar->getClientOriginalExtension();
-        $filename = date('Y/m/d').'/avatar-'. \Auth::id() .'.'. $extension;
+        $filename = date('Y/m/d') . '/avatar-' . \Auth::id() . '.' . $extension;
 
-        if($storage->putFileAs('profile', $avatar, $filename))
-        {
+        if ($storage->putFileAs('profile', $avatar, $filename)) {
             $profile = Profile::find(\Auth::id());
             $model = HistoryChangeInfo::firstOrNew(['user_id' => \Auth::id(), 'key' => 'avatar']);
             $model->user_id = \Auth::id();
@@ -555,17 +562,17 @@ class UserController extends Controller
             $profile->save();
 
             json_result([
-                'status'=>'sucess',
-                'message'=>'Đã thay đổi ảnh đại diện',
+                'status' => 'sucess',
+                'message' => 'Đã thay đổi ảnh đại diện',
                 'redirect' => route('module.frontend.user.info'),
             ]);
-        }
-        else{
+        } else {
             return redirect()->back();
         }
     }
 
-    public function changePass(Request $request){
+    public function changePass(Request $request)
+    {
         $this->validateRequest([
             'password_old' => 'required|min:8|max:32',
             'password' => 'required|min:8|max:32',
@@ -574,24 +581,25 @@ class UserController extends Controller
         $password_old = $request->password_old;
 
         $user = User::find(\Auth::id());
-        if ($user){
+        if ($user) {
             $hash = $user->password;
             if (password_verify($password_old, $hash)) {
                 $user->password = password_hash($request->password, PASSWORD_DEFAULT);
                 $user->save();
                 json_result([
-                    'status'=>'success',
-                    'message'=>'Đổi mật khẩu thành công',
+                    'status' => 'success',
+                    'message' => 'Đổi mật khẩu thành công',
                     'redirect' => route('login'),
                 ]);
-            }else{
-                json_result(['status'=>'error','message'=>'Mật khẩu cũ không đúng']);
+            } else {
+                json_result(['status' => 'error', 'message' => 'Mật khẩu cũ không đúng']);
             }
         }
         return redirect(route('login'));
     }
 
-    public function changeUserInfo(Request $request){
+    public function changeUserInfo(Request $request)
+    {
         $this->validateRequest([
             'key' => 'required',
             'value_new' => 'required',
@@ -613,7 +621,7 @@ class UserController extends Controller
 
         $unit_id = [];
         $unit = Unit::getTreeParentUnit(Profile::getUnitCode());
-        foreach ($unit as $item){
+        foreach ($unit as $item) {
             $unit_id[] = $item->id;
         }
 
@@ -621,17 +629,17 @@ class UserController extends Controller
             ->from('el_user_permission_type as a')
             ->leftJoin('el_permission_type_unit as b', 'b.permission_type_id', '=', 'a.permission_type_id')
             ->leftJoin('el_permissions as c', 'c.id', '=', 'a.permission_id')
-            ->where(function ($sub) use ($unit_id){
-                $sub->orWhere(function ($sub1) use ($unit_id){
+            ->where(function ($sub) use ($unit_id) {
+                $sub->orWhere(function ($sub1) use ($unit_id) {
                     $sub1->where('b.type', '=', 'group-child')
                         ->whereIn('b.unit_id', $unit_id);
                 });
-                $sub->orWhere(function ($sub2){
+                $sub->orWhere(function ($sub2) {
                     $sub2->where('b.type', '=', 'owner')
                         ->where('b.unit_id', '=', Profile::getUnitId());
                 });
             })
-            ->whereIn('c.name', function ($sub2){
+            ->whereIn('c.name', function ($sub2) {
                 $sub2->select(['per.parent'])
                     ->from('el_model_has_permissions as model')
                     ->leftJoin('el_permissions as per', 'per.id', '=', 'model.permission_id')
@@ -642,12 +650,12 @@ class UserController extends Controller
             ->pluck('a.user_id')->toArray();
 
         $user_managers = $query;
-        if (count($user_managers) > 0){
+        if (count($user_managers) > 0) {
             foreach ($user_managers as $user) {
                 $model = new Notify();
                 $model->user_id = $user;
                 $model->subject = 'Duyệt thay đổi thông tin';
-                $model->content = 'Nhân viên '. Profile::fullname(\Auth::id()) .' vừa thay đổi thông tin. Vui lòng vào quản trị để duyệt thông tin thay đổi';
+                $model->content = 'Nhân viên ' . Profile::fullname(\Auth::id()) . ' vừa thay đổi thông tin. Vui lòng vào quản trị để duyệt thông tin thay đổi';
                 $model->url = '';
                 $model->created_by = 0;
                 $model->save();
@@ -667,15 +675,15 @@ class UserController extends Controller
             $notification->save();
         }
 
-        if (url_mobile()){
+        if (url_mobile()) {
             $redirect = route('themes.mobile.frontend.profile');
-        }else{
+        } else {
             $redirect = route('module.frontend.user.info');
         }
 
         json_result([
-            'status'=>'sucess',
-            'message'=>'Thông tin đã thay đổi. Xin chờ duyệt...!',
+            'status' => 'sucess',
+            'message' => 'Thông tin đã thay đổi. Xin chờ duyệt...!',
             'redirect' => $redirect,
         ]);
     }
@@ -683,47 +691,48 @@ class UserController extends Controller
     public function showPlanSuggest()
     {
         $user = Profile::where('user_id', \Auth::id())->first();
-        $title = Titles::where('code','=',$user->title_code)->first();
-        return view('user::frontend.plansuggest.index',[
+        $title = Titles::where('code', '=', $user->title_code)->first();
+        return view('user::frontend.plansuggest.index', [
             'user' => $user,
             'title' => $title,
         ]);
     }
 
-    public function getDataPlanSuggest(Request $request) {
+    public function getDataPlanSuggest(Request $request)
+    {
         $search = $request->input('search');
         $sort = $request->input('sort', 'name');
         $order = $request->input('order', 'asc');
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 20);
-        $unit_code = Profile::where('user_id','=',\Auth::id())->value('unit_code');
-        $query = PlanSuggest::query()->where('unit_code','=',$unit_code);
+        $unit_code = Profile::where('user_id', '=', \Auth::id())->value('unit_code');
+        $query = PlanSuggest::query()->where('unit_code', '=', $unit_code);
         $count = $query->count();
         $query->orderBy($sort, $order);
         $query->offset($offset);
         $query->limit($limit);
         $rows = $query->get();
-//        foreach ($rows as $row) {
-//            $row->start_date = get_date($row->start_date,'d/m/Y H:i');
-//            $row->end_date = get_date($row->end_date,'d/m/Y H:i');
-//            $row->grade = number_format($row->grade,2,',','.');
-//        }
+        //        foreach ($rows as $row) {
+        //            $row->start_date = get_date($row->start_date,'d/m/Y H:i');
+        //            $row->end_date = get_date($row->end_date,'d/m/Y H:i');
+        //            $row->grade = number_format($row->grade,2,',','.');
+        //        }
         json_result(['total' => $count, 'rows' => $rows]);
     }
 
     public function createFormPlanSuggest(Request $request)
     {
         $data = array();
-        $subject = Subject::where('status','=',1)->get();
-        $title = Titles::where('status','=',1)->get();
+        $subject = Subject::where('status', '=', 1)->get();
+        $title = Titles::where('status', '=', 1)->get();
         $data['subject'] = $subject;
         $data['title'] = $title;
-        if ($request->id){
+        if ($request->id) {
             $id = (int) $request->id;
             $planSuggest = PlanSuggest::find($id);
-            $data['planSuggest'] =$planSuggest;
-            $data['subject_select'] =$planSuggest->subject_name;
-            $data['title_select'] = $planSuggest->title? array_values( json_decode($planSuggest->title,true)):[];
+            $data['planSuggest'] = $planSuggest;
+            $data['subject_select'] = $planSuggest->subject_name;
+            $data['title_select'] = $planSuggest->title ? array_values(json_decode($planSuggest->title, true)) : [];
         }
         json_result($data);
     }
@@ -732,9 +741,9 @@ class UserController extends Controller
     {
         $model = PlanSuggest::firstOrNew(['id' => $request->id]);
         $model->fill($request->all());
-        $model->intend = date('Y-m-d', strtotime('01-'.str_replace('/', '-', $request->intend)));
-        $model->unit_code =Profile::where('user_id','=',\Auth::id())->value('unit_code');
-        $model->created_by =\Auth::id();
+        $model->intend = date('Y-m-d', strtotime('01-' . str_replace('/', '-', $request->intend)));
+        $model->unit_code = Profile::where('user_id', '=', \Auth::id())->value('unit_code');
+        $model->created_by = \Auth::id();
         if ($model->save()) {
             /************************************/
             json_result([
@@ -744,7 +753,8 @@ class UserController extends Controller
         }
     }
 
-    public function certificate($course_id, $course_type, $user_id){
+    public function certificate($course_id, $course_type, $user_id)
+    {
         $query = \DB::query();
         $query->select([
             'b.end_date',
@@ -753,15 +763,15 @@ class UserController extends Controller
             'c.created_at as date_complete',
         ]);
         $query->from('el_course_register_view AS a');
-        $query->join('el_course_view AS b', function ($join){
+        $query->join('el_course_view AS b', function ($join) {
             $join->on('a.course_id', '=', 'b.course_id');
             $join->on('a.course_type', '=', 'b.course_type');
         });
-        $query->leftJoin('el_course_complete AS c', function ($join){
+        $query->leftJoin('el_course_complete AS c', function ($join) {
             $join->on('c.course_id', '=', 'b.course_id');
             $join->on('c.course_type', '=', 'b.course_type');
         });
-        $query->where('a.user_id','=',\Auth::id());
+        $query->where('a.user_id', '=', \Auth::id());
         $query->where('a.course_id', '=', $course_id);
         $query->where('a.course_type', '=', $course_type);
 
@@ -777,9 +787,9 @@ class UserController extends Controller
         $month = get_date(@$model->date_complete, 'm');
         $year = get_date(@$model->date_complete, 'Y');
 
-        if ($course_type == 1){
+        if ($course_type == 1) {
             $course = OnlineCourse::find($course_id);
-        }else{
+        } else {
             $course = OfflineCourse::find($course_id);
         }
         $certificate = \Modules\Certificate\Entities\Certificate::find($course->cert_code);
@@ -787,11 +797,11 @@ class UserController extends Controller
 
         $storage = \Storage::disk('upload');
         $path = $storage->path($certificate->image);
-        $temp = str_replace($certificate->image, str_replace('.', '_'.$course_id.'.', $certificate->image), $path);
+        $temp = str_replace($certificate->image, str_replace('.', '_' . $course_id . '.', $certificate->image), $path);
 
         $image = ImageManagerStatic::make($path);
 
-        $image->text($fullname, 500, 520, function ($font){
+        $image->text($fullname, 500, 520, function ($font) {
             $font->file(public_path('fonts/UTM Wedding K&T.ttf'));
             $font->size(100);
             $font->color('#bd8e34');
@@ -802,7 +812,7 @@ class UserController extends Controller
             $font->size(50);
         });*/
 
-        $image->text($title, 870, 655, function ($font){
+        $image->text($title, 870, 655, function ($font) {
             $font->file(public_path('fonts/FiraSansExtraCondensed-Regular.ttf'));
             $font->size(50);
             $font->align('center');
@@ -813,7 +823,7 @@ class UserController extends Controller
         $max_len     = 100;
         $font_height = 20;
 
-        $lines = explode("/n", wordwrap($course_name, $max_len,"/n", true));
+        $lines = explode("/n", wordwrap($course_name, $max_len, "/n", true));
         $y     = $center_y - ((count($lines) - 1) * $font_height);
         foreach ($lines as $line) {
             $line = Str::upper($line);
@@ -848,7 +858,7 @@ class UserController extends Controller
             'Content-Type: application/pdf',
         );
 
-        return response()->download($temp, 'chung_chi_'.Str::slug($fullname, '_').'.png', $headers);
+        return response()->download($temp, 'chung_chi_' . Str::slug($fullname, '_') . '.png', $headers);
 
         //return \Storage::download($temp);
     }
@@ -868,32 +878,32 @@ class UserController extends Controller
             ->select([
                 'a.*',
             ])
-            ->join('el_course_register_view as b',function($join){
-                $join->on('a.course_id','=','b.course_id');
-                $join->on('a.course_type','=','b.course_type');
+            ->join('el_course_register_view as b', function ($join) {
+                $join->on('a.course_id', '=', 'b.course_id');
+                $join->on('a.course_type', '=', 'b.course_type');
             })
 
-            ->where('b.user_id','=', $user_id)
+            ->where('b.user_id', '=', $user_id)
             ->where('a.status', '=', 1)
             ->where('b.status', '=', 1)
             ->where('a.isopen', '=', 1);
 
         if ($type == 1 || $type_course == 1) {
-            $query->where('b.course_type','=', 1);
-            $query->where('a.course_type','=', 1);
+            $query->where('b.course_type', '=', 1);
+            $query->where('a.course_type', '=', 1);
         } else if ($type == 2 || $type_course == 2) {
-            $query->where('b.course_type','=', 2);
-            $query->where('a.course_type','=', 2);
+            $query->where('b.course_type', '=', 2);
+            $query->where('a.course_type', '=', 2);
         }
 
         if ($search) {
             $query->where(function ($subquery) use ($search) {
-                $subquery->orWhere('a.code', 'like', '%'. $search .'%');
-                $subquery->orWhere('a.name', 'like', '%'. $search .'%');
+                $subquery->orWhere('a.code', 'like', '%' . $search . '%');
+                $subquery->orWhere('a.name', 'like', '%' . $search . '%');
             });
         }
         if ($start_date) {
-            $query->where('a.start_date','>=',date_convert($start_date, '00:00:00'));
+            $query->where('a.start_date', '>=', date_convert($start_date, '00:00:00'));
         }
         if ($end_date) {
             $query->where('a.end_date', '<=', date_convert($end_date, '23:59:59'));
@@ -904,36 +914,36 @@ class UserController extends Controller
         $rows = $query->paginate(12);
         foreach ($rows as $row) {
             $now = date('Y-m-d');
-            $row->avg_rating_star = 0;//@OnlineCourse::find($row->id)->avgRatingStar();
+            $row->avg_rating_star = 0; //@OnlineCourse::find($row->id)->avgRatingStar();
             $row->start_date = get_date($row->start_date);
             $row->end_date = get_date($row->end_date);
-            $row->course_url =$row->course_type==1?route('module.online.detail',['id'=>$row->course_id]):route('module.offline.detail',['id'=>$row->course_id]);
+            $row->course_url = $row->course_type == 1 ? route('module.online.detail', ['id' => $row->course_id]) : route('module.offline.detail', ['id' => $row->course_id]);
 
             $row->course_time_unit = preg_replace("/[^a-z]/", '', $row->course_time);
             $row->course_time = preg_replace("/[^0-9]./", '', $row->course_time);
         }
 
-        if ($user_type == 1){
+        if ($user_type == 1) {
             $user = Profile::whereUserId(\Auth::id())->first();
             $unit = Unit::getTreeParentUnit(@$user->unit_code);
             $title = Titles::whereCode(@$user->title_code)->first();
 
             PromotionUserPoint::firstOrCreate(['user_id' => auth()->id()], ['point' => 0, 'level_id' => 0]);
             $promotion = PromotionUserPoint::whereUserId(auth()->id())
-                ->select('el_promotion_user_point.*','el_promotion_level.level','el_promotion_level.images','el_promotion_level.name')
-                ->join('el_promotion_level', 'el_promotion_user_point.level_id','level')
+                ->select('el_promotion_user_point.*', 'el_promotion_level.level', 'el_promotion_level.images', 'el_promotion_level.name')
+                ->join('el_promotion_level', 'el_promotion_user_point.level_id', 'level')
                 ->first();
             $sliders = Slider::where('status', '=', 1)->where('type', '=', 1)->where('location', '!=', 1)
-                ->where(function ($sub) use ($unit){
+                ->where(function ($sub) use ($unit) {
                     $sub->whereNull('object');
-                    foreach ($unit as $item){
+                    foreach ($unit as $item) {
                         $sub->orWhereIn('object', [$item->id]);
                     }
                 })->get();
             $career_roadmaps = CareerRoadmap::where('title_id', '=', @$title->id)
                 ->where('primary', '=', 1)
                 ->latest()->first();
-        }else{
+        } else {
             $promotion = '';
             $sliders = '';
             $career_roadmaps = '';
@@ -960,11 +970,11 @@ class UserController extends Controller
         $limit = $request->input('limit', 20);
 
         $query = \DB::table('el_course_view as a')
-            ->join('el_course_register_view as b',function($join){
-                $join->on('a.course_id','=','b.course_id');
-                $join->on('a.course_type','=','b.course_type');
+            ->join('el_course_register_view as b', function ($join) {
+                $join->on('a.course_id', '=', 'b.course_id');
+                $join->on('a.course_type', '=', 'b.course_type');
             })
-            ->where('b.user_id','=',Auth::id())
+            ->where('b.user_id', '=', Auth::id())
             ->where('a.status', '=', 1)
             ->where('b.status', '=', 1)
             ->where('a.isopen', '=', 1)
@@ -980,45 +990,47 @@ class UserController extends Controller
             $now = date('Y-m-d');
             $row->start_date = get_date($row->start_date);
             $row->end_date = get_date($row->end_date);
-            $row->course_url =$row->course_type==1?route('module.online.detail',['course_id'=>$row->id]):route('module.offline.detail',['course_id'=>$row->id]);
+            $row->course_url = $row->course_type == 1 ? route('module.online.detail', ['course_id' => $row->id]) : route('module.offline.detail', ['course_id' => $row->id]);
         }
 
         json_result(['total' => $count, 'rows' => $rows]);
     }
 
-    protected function calDate($date1, $date2) {
+    protected function calDate($date1, $date2)
+    {
         $diff = abs(strtotime($date2) - strtotime($date1));
-        $years = floor($diff / (365*60*60*24));
-        $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-        $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
+        $years = floor($diff / (365 * 60 * 60 * 24));
+        $months = floor(($diff - $years * 365 * 60 * 60 * 24) / (30 * 60 * 60 * 24));
+        $days = floor(($diff - $years * 365 * 60 * 60 * 24 - $months * 30 * 60 * 60 * 24) / (60 * 60 * 24));
 
-        $total_date = $years*365 + $months*30 + $days;
+        $total_date = $years * 365 + $months * 30 + $days;
 
         return number_format($total_date, 2);
     }
 
     private function isEvaluation($start_evaluation, $status)
     {
-        $days = (strtotime(date('Y-m-d')) - strtotime($start_evaluation))/ (60 * 60 * 24);
+        $days = (strtotime(date('Y-m-d')) - strtotime($start_evaluation)) / (60 * 60 * 24);
 
-        if (!$start_evaluation || $days<0 || $status<>2)
+        if (!$start_evaluation || $days < 0 || $status <> 2)
             return 0; // chưa tới hạn đánh giá
-        if ($days>=0 && $days<=8)
+        if ($days >= 0 && $days <= 8)
             return 1; // đánh giá
-        if ($days>8)
+        if ($days > 8)
             return 2; // hết hạn đánh giá
         return 0;
     }
 
-    public function getPromotionHistory(Request $request){
+    public function getPromotionHistory(Request $request)
+    {
         $sort = $request->input('sort', 'name');
         $order = $request->input('order', 'asc');
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 20);
 
         $query = PromotionUserHistory::whereUserId(auth()->id())
-            ->select('el_promotion_user_point_get_history.*','el_online_course.name')
-            ->join('el_online_course' ,'el_promotion_user_point_get_history.course_id','el_online_course.id');
+            ->select('el_promotion_user_point_get_history.*', 'el_online_course.name')
+            ->join('el_online_course', 'el_promotion_user_point_get_history.course_id', 'el_online_course.id');
 
         $count = $query->count();
         $query->orderBy($sort, $order);
@@ -1039,7 +1051,7 @@ class UserController extends Controller
         $unit = Unit::where('code', '=', $user->unit_code)->first();
         $title = Titles::where('code', '=', $user->title_code)->first();
 
-        return view('user::frontend.capabilities.course',[
+        return view('user::frontend.capabilities.course', [
             'user' => $user,
             'unit' => $unit,
             'title' => $title,
@@ -1050,7 +1062,7 @@ class UserController extends Controller
     {
         $subject_id = $request->subject;
         $subject = Subject::find($subject_id);
-        if (url_mobile()){
+        if (url_mobile()) {
             return view('trainingbytitle::mobile.modal_register_roadmap', [
                 'subject' => $subject,
                 'subject_id' => $subject_id,
@@ -1071,10 +1083,10 @@ class UserController extends Controller
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 20);
 
-        $courses_offline = OfflineCourse::where(['subject_id'=>$subject_id,'status'=>1,'isopen'=>1])
-            ->select('id','code','name',\DB::raw('2 as course_type'),'start_date','end_date');
-        $courses_online = OnlineCourse::where(['subject_id'=>$subject_id,'status'=>1,'isopen'=>1])
-            ->select('id','code','name',\DB::raw('1 as course_type'),'start_date','end_date');
+        $courses_offline = OfflineCourse::where(['subject_id' => $subject_id, 'status' => 1, 'isopen' => 1])
+            ->select('id', 'code', 'name', \DB::raw('2 as course_type'), 'start_date', 'end_date');
+        $courses_online = OnlineCourse::where(['subject_id' => $subject_id, 'status' => 1, 'isopen' => 1])
+            ->select('id', 'code', 'name', \DB::raw('1 as course_type'), 'start_date', 'end_date');
 
         $query = $courses_online->union($courses_offline);
         $count = $query->count();
@@ -1085,7 +1097,7 @@ class UserController extends Controller
         foreach ($rows as $row) {
             $row->start_date = get_date($row->start_date, 'd/m/Y');
             $row->end_date = get_date($row->end_date, 'd/m/Y');
-            $row->type = $row->course_type==1  ? 'Online' : trans('backend.offline');
+            $row->type = $row->course_type == 1  ? 'Online' : trans('backend.offline');
         }
 
         json_result(['total' => $count, 'rows' => $rows]);
@@ -1098,33 +1110,32 @@ class UserController extends Controller
         $subject_id = $request->subject_id;
         $user_id = Auth::id();
         $error = false;
-        if (!$course_id){
-            $exists = SubjectRegister::where(['user_id'=>$user_id,'subject_id'=>$subject_id])->exists();
+        if (!$course_id) {
+            $exists = SubjectRegister::where(['user_id' => $user_id, 'subject_id' => $subject_id])->exists();
             if ($exists)
                 $error = true;
-            else{
+            else {
                 $model = SubjectRegister::firstOrNew(['user_id' => $user_id, 'subject_id' => $subject_id]);
-                $model->status=1;
+                $model->status = 1;
                 $model->note = 'Ghi danh từ tháp đào tạo';
                 $model->save();
             }
-        }else{
-            if ($course_type==1) {
+        } else {
+            if ($course_type == 1) {
                 if (OnlineRegister::where(['user_id' => $user_id, 'course_id' => $course_id])->exists())
                     $error = true;
-                else{
+                else {
                     $model = OnlineRegister::firstOrNew(['user_id' => $user_id, 'course_id' => $course_id]);
-                    $model->status=1;
+                    $model->status = 1;
                     $model->note = 'Ghi danh từ tháp đào tạo';
                     $model->save();
                 }
-            }
-            elseif ($course_type==2) {
+            } elseif ($course_type == 2) {
                 if (OfflineRegister::where(['user_id' => $user_id, 'course_id' => $course_id])->exists())
                     $error = true;
-                else{
+                else {
                     $model = OfflineRegister::firstOrNew(['user_id' => $user_id, 'course_id' => $course_id]);
-                    $model->status=1;
+                    $model->status = 1;
                     $model->note = 'Ghi danh từ tháp đào tạo';
                     $model->save();
                 }
@@ -1149,28 +1160,28 @@ class UserController extends Controller
         $order = $request->input('order', 'desc');
         $offset = $request->input('offset', 0);
         $limit = $request->input('limit', 20);
-//            Profile::addGlobalScope(new DraftScope('user_id'));
+        //            Profile::addGlobalScope(new DraftScope('user_id'));
         $prefix = \DB::getTablePrefix();
         $query = SubjectRegister::query();
-        $query->select('el_subject_register.*',\DB::raw("concat(".$prefix."b.lastname,' ',".$prefix."b.firstname) as full_name"),'c.name as subject','c.code');
-        $query->from('el_subject_register')->join('el_profile as b','el_subject_register.user_id','b.user_id')
-            ->join('el_subject as c','el_subject_register.subject_id','c.id')
-            ->where('el_subject_register.user_id','=',$user_id);
+        $query->select('el_subject_register.*', \DB::raw("concat(" . $prefix . "b.lastname,' '," . $prefix . "b.firstname) as full_name"), 'c.name as subject', 'c.code');
+        $query->from('el_subject_register')->join('el_profile as b', 'el_subject_register.user_id', 'b.user_id')
+            ->join('el_subject as c', 'el_subject_register.subject_id', 'c.id')
+            ->where('el_subject_register.user_id', '=', $user_id);
         if ($search) {
             $query->where(function ($sub_query) use ($search) {
                 $sub_query->orWhere('c.name', 'like', '%' . $search . '%');
-                $sub_query->orWhere('c.code', 'like', '%'. $search .'%');
+                $sub_query->orWhere('c.code', 'like', '%' . $search . '%');
             });
         }
         $count = $query->count();
-        $query->orderBy( $sort, $order);
+        $query->orderBy($sort, $order);
         $query->offset($offset);
         $query->limit($limit);
 
         $rows = $query->get();
         foreach ($rows as $row) {
-            $row->created_date = get_date($row->created_at,'d/m/Y H:i:s');
-            $row->status_name = $row->status==1?'Đã đăng ký':'Hủy đăng ký';
+            $row->created_date = get_date($row->created_at, 'd/m/Y H:i:s');
+            $row->status_name = $row->status == 1 ? 'Đã đăng ký' : 'Hủy đăng ký';
         }
 
         json_result(['total' => $count, 'rows' => $rows]);
@@ -1179,12 +1190,13 @@ class UserController extends Controller
     public function updateSubjectRegister(Request $request)
     {
         $model = SubjectRegister::findOrFail($request->id);
-        $model->status=2;
+        $model->status = 2;
         $model->save();
         json_message('Hủy thành công');
     }
 
-    public function getChildTrainingByTitleCategory(Request $request){
+    public function getChildTrainingByTitleCategory(Request $request)
+    {
         $cate_id = $request->id;
         $start_date = $request->start_date;
 
@@ -1200,7 +1212,7 @@ class UserController extends Controller
         $childs = TrainingByTitleDetail::where('training_title_category_id', '=', $cate_id)->get();
 
         $level_subject_arr = [];
-        foreach ($childs as $child){
+        foreach ($childs as $child) {
             $subject = Subject::find($child->subject_id);
             $level_subject = LevelSubject::find($subject->level_subject_id);
             $level_subject_arr[$level_subject->id] = @$level_subject->name;
@@ -1213,7 +1225,7 @@ class UserController extends Controller
             $count_course_by_subject = CourseView::whereSubjectId($child->subject_id)->whereStatus(1)->count();
             $count_course_completed_by_subject = UserCompletedSubject::whereSubjectId($child->subject_id)->whereUserId(Auth::id())->count();
 
-            $child->percent_subject = ($count_course_completed_by_subject/($count_course_by_subject > 0 ? $count_course_by_subject : 1)) * 100;
+            $child->percent_subject = ($count_course_completed_by_subject / ($count_course_by_subject > 0 ? $count_course_by_subject : 1)) * 100;
             $child->has_course = $this->checkCourseSubject($child->subject_id);
         }
 
@@ -1223,7 +1235,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function violateGetData(Request $request){
+    public function violateGetData(Request $request)
+    {
         $sort = $request->input('sort', 'id');
         $order = $request->input('order', 'asc');
         $offset = $request->input('offset', 0);
@@ -1234,7 +1247,7 @@ class UserController extends Controller
             ->from('el_offline_schedule as a')
             ->leftJoin('el_offline_register as b', 'b.course_id', '=', 'a.course_id')
             ->leftJoin('el_offline_course as c', 'c.id', '=', 'a.course_id')
-            ->where('b.user_id',\Auth::id());
+            ->where('b.user_id', \Auth::id());
 
         $shedule->whereNotExists(function (Builder $builder) {
             $builder->select(['id'])
@@ -1247,7 +1260,7 @@ class UserController extends Controller
 
         $user_arr = [];
         $course_arr = [];
-        foreach ($list_shedule as $item){
+        foreach ($list_shedule as $item) {
             $user_arr[] = $item->user_id;
             $course_arr[] = $item->course_id;
         }
@@ -1268,31 +1281,31 @@ class UserController extends Controller
         ]);
         $query->from('el_offline_register_view as a');
         $query->leftJoin('el_offline_course as course', 'course.id', '=', 'a.course_id');
-        $query->leftjoin('el_unit as b','b.id','=','a.unit_id');
-        $query->leftjoin('el_unit_type as c','c.id','=','b.type');
-        $query->leftjoin('el_area as d','d.id','=','b.area_id');
+        $query->leftjoin('el_unit as b', 'b.id', '=', 'a.unit_id');
+        $query->leftjoin('el_unit_type as c', 'c.id', '=', 'b.type');
+        $query->leftjoin('el_area as d', 'd.id', '=', 'b.area_id');
         $query->where('a.status', '=', 1);
-        $query->where('a.user_id',\Auth::id());
-        $query->where(function ($sub) use ($user_arr, $course_arr){
+        $query->where('a.user_id', \Auth::id());
+        $query->where(function ($sub) use ($user_arr, $course_arr) {
             $sub->orWhereNotExists(function (Builder $builder) {
                 $builder->select(['id'])
                     ->from('el_offline_course_complete as occ')
                     ->whereColumn('occ.user_id', '=', 'a.user_id')
                     ->whereColumn('occ.course_id', '=', 'a.course_id');
             });
-            $sub->orWhere(function ($sub2) use ($user_arr, $course_arr){
+            $sub->orWhere(function ($sub2) use ($user_arr, $course_arr) {
                 $sub2->whereIn('a.course_id', $course_arr);
                 $sub2->whereIn('a.user_id', $user_arr);
             });
         });
 
         $count = $query->count();
-        $query->orderBy('a.'.$sort, 'ASC');
+        $query->orderBy('a.' . $sort, 'ASC');
         $query->offset($offset);
         $query->limit($limit);
         $rows = $query->get();
 
-        foreach ($rows as $row){
+        foreach ($rows as $row) {
             $profile = ProfileView::whereUserId($row->user_id)->first();
             $course = OfflineCourse::find($row->course_id);
 
@@ -1319,26 +1332,26 @@ class UserController extends Controller
                 ->where('a.course_id', '=', $row->course_id)
                 ->where('b.register_id', '=', $row->id)
                 ->get();
-            foreach ($schedules as $schedule){
-                if (get_date($schedule->end_time, 'H:i:s') <= '12:00:00'){
-                    $row->time_schedule .= 'Sáng '. get_date($schedule->lesson_date) .'; ';
-                }else{
-                    $row->time_schedule .= 'Chiều '. get_date($schedule->lesson_date) .'; ';
+            foreach ($schedules as $schedule) {
+                if (get_date($schedule->end_time, 'H:i:s') <= '12:00:00') {
+                    $row->time_schedule .= 'Sáng ' . get_date($schedule->lesson_date) . '; ';
+                } else {
+                    $row->time_schedule .= 'Chiều ' . get_date($schedule->lesson_date) . '; ';
                 }
 
-                if ($schedule->absent_id != 0 || $schedule->absent_reason_id != 0 || $schedule->discipline_id != 0){
-                    if (get_date($schedule->end_time, 'H:i:s') <= '12:00:00'){
-                        $row->schedule_discipline .= 'Sáng '. get_date($schedule->lesson_date) .'; ';
-                    }else{
-                        $row->schedule_discipline .= 'Chiều '. get_date($schedule->lesson_date) .'; ';
+                if ($schedule->absent_id != 0 || $schedule->absent_reason_id != 0 || $schedule->discipline_id != 0) {
+                    if (get_date($schedule->end_time, 'H:i:s') <= '12:00:00') {
+                        $row->schedule_discipline .= 'Sáng ' . get_date($schedule->lesson_date) . '; ';
+                    } else {
+                        $row->schedule_discipline .= 'Chiều ' . get_date($schedule->lesson_date) . '; ';
                     }
 
                     $discipline = Discipline::find($schedule->discipline_id);
                     $absent = Absent::find($schedule->absent_id);
                     $absent_reason = AbsentReason::find($schedule->absent_reason_id);
-                    $row->discipline = $discipline ? $discipline->name.'; ' : '';
-                    $row->absent = $absent ? $absent->name.'; ' : '';
-                    $row->absent_reason = $absent_reason ? $absent_reason->name.'; ' : '';
+                    $row->discipline = $discipline ? $discipline->name . '; ' : '';
+                    $row->absent = $absent ? $absent->name . '; ' : '';
+                    $row->absent_reason = $absent_reason ? $absent_reason->name . '; ' : '';
                 }
             }
 
@@ -1347,15 +1360,18 @@ class UserController extends Controller
 
             switch ($profile->status_id) {
                 case 0:
-                    $row->status_user = trans('backend.inactivity'); break;
+                    $row->status_user = trans('backend.inactivity');
+                    break;
                 case 1:
-                    $row->status_user = trans('backend.doing'); break;
+                    $row->status_user = trans('backend.doing');
+                    break;
                 case 2:
-                    $row->status_user = trans('backend.probationary'); break;
+                    $row->status_user = trans('backend.probationary');
+                    break;
                 case 3:
-                    $row->status_user = trans('backend.pause'); break;
+                    $row->status_user = trans('backend.pause');
+                    break;
             }
-
         }
         json_result(['total' => $count, 'rows' => $rows]);
     }

@@ -24,7 +24,8 @@ class CacheModel extends Model
     public function __construct()
     {
         parent::__construct();
-        if (config('enable_subtance_caching', true)) {
+
+        if (config('app.enable_subtance_caching', true)) {
             $this->cacheFor = 7776000; // 90 days
 
             // binding config cache

@@ -1,8 +1,8 @@
-# ⚡ Query Caching
+# ⚡ Caching các truy vấn
 
-Caching options can either be defined at the model level for default values or during the query.
+Các thiết lập cache có thể được thực hiện ở cấp độ đối tượng, hoặc ở cấp độ mỗi truy vấn.
 
-For example, we can set default values for a model called `Book`:
+Ví dụ, chúng ta có thể thiết lập cache cho model tên `Book` như sau:
 
 ```php
 class Book extends Model
@@ -40,41 +40,37 @@ class Book extends Model
 }
 ```
 
-### Enable/Disable caching on-demand
+### Bật/Tắt caching on-demand
 
-When opting for default values, keep in mind that setting the `$cacheFor` value will cache all queries. To disable caching and instead use a non-caching version, consider `dontCache`:
+Với tùy chọn thiết lập cache ở mức đối tượng, giá trị `$cacheFor` được thiết lập thì toàn bộ các query đều được cache lại. Để thực hiện một ngoại lệ nào đó khi truy vấn, có thể sử phương thức `dontCache` như sau:
 
 ```php
 $uncachedBooks = Book::dontCache()->get();
 ```
 
-Alternatively, if you want to cache queries by specifying this during the query, consider using `cacheFor()` during the query:
+Thêm nữa, nếu muốn thiết lập lại giá trị cache-for cho truy vấn cụ thể nào đó, hãy cân nhắc sử dụng `cacheFor()` khi truy vấn:
 
 ```php
 $booksCount = Book::cacheFor(60 * 60)->count();
 ```
 
-Using a DateTime instance like Carbon also works:
+Sử dụng DateTime theo cách của Carbon:
 
 ```php
 $booksCount = Book::cacheFor(now()->addDays(1))->count();
 ```
 
-### Prefixing cache
+### Prefixing
 
-You may add a default global prefix to the model by specifying `$cachePrefix` or do it at the query level:
+Tương tự, `$cachePrefix` cũng có thể được thiết lập ở cả cấp độ đối tượng và cấp độ truy vấn:
 
 ```php
 $scifiBooks = Book::cachePrefix('scifi_')->count();
 ```
 
-### Defining values dynamically
+### Khai báo các giá trị linh động
 
-Sometimes, you may want to define the cache settings programmatically, by running business logic, over the static class properties, without having to bundle the application with repetitive logic at the query level in case you have multiple queries.
-
-For example, if the authenticated user is an admin, disable the caching completely. The caching will stay active for the rest of the users, as normal.
-
-You can define one of them or both of them. In case you define both, the function will be favored over the property.
+Có nhiều tình huống ta muốn các giá trị cache không cố định mà linh hoạt. Giả sử ta chỉ cache cho đối tượng người sử dụng bình thường mà không cache khi admin truy cập, điều này hoàn toàn có thể thực hiện được thông qua các phương thức tương ứng. Như ở ví dụ sau:
 
 ```php
 class Book extends Model
@@ -104,7 +100,7 @@ class Book extends Model
 }
 ```
 
-These are the following possible methods you can implement:
+Phía sau là các phương thức giúp thiết lập giá trị cho cache một cách "programatically":
 
 ```php
 class Book extends Model

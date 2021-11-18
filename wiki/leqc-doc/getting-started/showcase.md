@@ -1,8 +1,8 @@
-# 🙌 Showcase
+# 🙌 Ví dụ
 
-The package has the ability to track the SQL used and use it as a key in the cache storage, making the caching query-by-query a breeze, independent of your ORM usage.
+Thư viện sẽ tự động sử dụng các câu query trong lớp làm key để thực hiện cache, làm cho việc cache trở nên thuận tiện và độc lập với các truy vấn ORM được sử dụng trong model.
 
-By default, caching is disabled unless you specify a value for `$cacheFor` .
+Mặc định, caching sẽ không được bật cho đến khi thiết lập giá trị cho thuộc tính `$cacheFor` của lớp.
 
 ```php
 use Rennokki\QueryCache\Traits\QueryCacheable;
@@ -21,7 +21,7 @@ class Article extends Model
 }
 ```
 
-Both of the following queries have different keys in the cache storage, thus it won't overlap with other cached queries.
+Hai truy vấn sau đây được lưu riêng rẽ bằng các key khác nhau trong cache storage:
 
 ```php
 // For the below query, a hash will be made using the following SQL:

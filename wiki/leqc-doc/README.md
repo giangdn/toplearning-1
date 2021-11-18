@@ -1,22 +1,22 @@
-# Table of contents
+# Hướng dẫn chi tiết sử dụng laravel-eloquent-query-cache
 
-### Getting Started
+### Cài đặt và ví dụ
 
-* [🚀 Installation](getting-started/installation.md)
-* [🙌 Showcase](getting-started/showcase.md)
+* [🚀 Cài đặt](getting-started/installation.md)
+* [🙌 Ví dụ cơ bản](getting-started/showcase.md)
 
-### Caching <a href="cache-tags" id="cache-tags"></a>
+### Caching cơ bản
 
-* [⚡ Query Caching](cache-tags/query-caching.md)
-* [👥 Relationships Caching](cache-tags/relationships-caching.md)
+* [⚡ Caching các truy vấn](cache-tags/query-caching.md)
+* [👥 Caching các relationship](cache-tags/relationships-caching.md)
 * [📑 Cache Tags](cache-tags/cache-tags.md)
-* [🛑 Cache Invalidation](cache-tags/cache-invalidation/README.md)
-  * [🌍 Global Cache Invalidation](cache-tags/cache-invalidation/global-cache-invalidation.md)
-  * [🍸 Automatic Invalidation](cache-tags/cache-invalidation/full-automatic-invalidation.md)
-  * [🤔 Many-to-Many Automatic Cache Invalidation](cache-tags/cache-invalidation/many-to-many-automatic-cache-invalidation.md)
+* [🛑 Xóa Cache](cache-tags/cache-invalidation/README.md)
+  * [🌍 Xóa Cache mức global](cache-tags/cache-invalidation/global-cache-invalidation.md)
+  * [🍸 Thiết lập cache tự động xóa](cache-tags/cache-invalidation/full-automatic-invalidation.md)
+  * [🤔 Liên hệ n-n và cache tự động xóa ](cache-tags/cache-invalidation/many-to-many-automatic-cache-invalidation.md)
 
-### Advanced
+### Nâng cao
 
-* [✨ Implement Caching](advanced/implement-caching/README.md)
-  * [🔑 Generating your own key](advanced/implement-caching/generating-your-own-key.md)
-  * [🎇 Implementing cache for other functions than get()](advanced/implement-caching/implementing-cache-for-other-functions-than-get.md)
+* [✨ Triển khai lớp custom caching](advanced/implement-caching/README.md)
+  * [🔑 Sinh key](advanced/implement-caching/generating-your-own-key.md)
+  * [🎇 Thực thi cache cho các hàm khác ngoài get()](advanced/implement-caching/implementing-cache-for-other-functions-than-get.md)

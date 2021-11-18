@@ -28,4 +28,30 @@
 
 ## 4. Lớp cơ sở `CacheModel`
 - Đây là lớp cơ sở được sử dụng làm lớp cha cho các lớp Eloquent Model muốn triển khai Cache.
-- 
+- Lớp cơ sở này được tạo ra dựa trên `laravel-eloquent-query-cache`. Đọc thêm hướng dẫn chi tiết về `laravel-eloquent-query-cache` [tại đây](leqc-doc/README.md)
+
+## 5. Sử dụng Cache của thư viện Laravel
+- Laravel cung cấp lớp `Illuminate\Support\Facades\Cache` sẵn sàng và dễ dàng cho sử dụng.
+- Tài liệu chính thức hướng dẫn sử dụng Cache trong Laravel cho phiên bản 6.x đọc [tại đây](https://laravel.com/docs/6.x/cache)
+- Để thực hiện Cache các giá trị xử lý, 2 phương thức hữu ích và dễ sử dụng bao gồm
+	
+	Phương thức `remember`:
+	```php
+	use Illuminate\Support\Facades\Cache;
+
+	// key để lưu cache là users
+	// thời gian lưu cache là giá trị của $seconds
+	$value = Cache::remember('users', $seconds, function () {
+			return DB::table('users')->get();
+	});
+	```
+	Phương thức `rememberForever`:
+	```php
+	use Illuminate\Support\Facades\Cache;
+
+	// key để lưu cache là users
+	// phương thức này giá trị cache sẽ không hết hạn và Laravel sẽ cache giá trị này cho tới khi nó bị xóa
+	$value = Cache::rememberForever('users', function () {
+  		return DB::table('users')->get();
+	});
+	```

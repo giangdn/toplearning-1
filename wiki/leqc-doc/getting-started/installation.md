@@ -1,16 +1,16 @@
-# 🚀 Installation
+# 🚀 Cài đặt
 
-### Installing the package
+### Cài đặt package
 
-Hop into your console and install the package via Composer:
+Sử dụng Composer để cài:
 
 ```bash
 composer require rennokki/laravel-eloquent-query-cache
 ```
 
-### Preparing the models
+### Chuẩn bị lớp models
 
- Each model you want to cache on should use the `Rennokki\QueryCache\Traits\QueryCacheable` trait.
+ Trong các model muốn sử dụng tính năng cache của thư viện, khai báo sử dụng trait `Rennokki\QueryCache\Traits\QueryCacheable`.
 
 ```php
 use Rennokki\QueryCache\Traits\QueryCacheable;
